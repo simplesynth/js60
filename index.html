@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>
+    JS 106
+  </title>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="./main.css">
+  <script
+    src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous">
+  </script>
+  <script type="text/javascript" src="js_106.js"></script>
+  <script type="text/javascript" src="arpeggiator.js"></script>
+
+</head>
+<body>
+  <div class="container" id="main">
+    <h1 id="mainTitle">JS 106</h1>
+    <a href="#" class="btn btn-success" id="startButton">
+      START
+    </a>
+    <a href="#" class="btn btn-danger" id="stopButton">
+      STOP
+    </a>
+    </div>
+
+    <br>
+
+    <div class="container" id="oscControls">
+      <div class="col-lg-3" id="frequency">
+        <h3>frequency</h3>
+        <input id="frequency_input" type="range" name="frequency" min="20" max="880" step="0.25">
+      </div>
+      <div class="col-lg-3" id="gain">
+        <h3>gain</h3>
+        <input id="gainInput" type="range" name="gain" min="0" max="1" step="0.01" >
+      </div>
+      <div class="col-lg-3" id="oscType">
+        <h3>shape</h3>
+        <select id="shapeInput">
+          <option value="square">square</option>
+          <option value="triangle">triangle</option>
+          <option value="sine">sine</option>
+          <option value="sawtooth">sawtooth</option>
+        </select>
+      </div>
+      <div class="col-lg-3">
+
+      </div>
+    </div>
+
+    <br>
+
+    <div class="container" id="filterControls">
+      <div class="col-lg-3" id="filterFreq">
+        <h3>filter frequency</h3>
+        <input id="filterFreqInput" type="range" name="filterFreq" min="0" max="15000">
+      </div>
+      <div class="col-lg-3" id="resonance">
+        <h3>resonance</h3>
+        <input id="resonanceInput" type="range" name="resonance" min="-3.4028" max="3.4028" step="0.01">
+      </div>
+      <div class="col-lg-6">
+
+      </div>
+    </div>
+
+    <br><br>
+
+    <div class="container" id="arpeggiatorControls">
+      <div class="col-lg-3">
+      <h3>arpeggiator</h3>
+        <div id="startStop">
+          <a href="#" id="arpStart" class="btn btn-sm btn-success">
+            START
+          </a>
+          <a href="#" id="arpStop" class="btn btn-sm btn-danger">
+            STOP
+          </a>
+        </div>
+        <div id="speed">
+          <h4>speed</h4>
+          <input type="range" name="arpSpeed" id="arpSpeed" min="1" max ="2000">
+        </div>
+        <div class="container-fluid">
+          <div class="col-lg-6" id="octaves">
+            <h4>octaves</h4>
+            <select id="arpOctaves">
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </div>
+          <div class="col-lg-6" id="direction">
+            <h4>direction</h4>
+            <select id="arpDirection">
+              <option value='up'>up</option>
+              <option value='down'>down</option>
+              <option value='up/down'>up/down</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <h3>delay</h3>
+
+      </div>
+      <div class="col-lg-6">
+
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
