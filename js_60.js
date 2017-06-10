@@ -45,7 +45,6 @@ $(document).ready(function(){
 
   // LISTENERS
   $frequencyInput.on('mousemove change', function(){
-    console.log('frequency changed: ' + $frequencyInput.val());
     if (($frequencyInput.val() !== oscillatorNode.frequency.value) && ($frequencyInput.val() !== arpeggiatorBaseFrequency ) ){
       oscillatorNode.frequency.value = $frequencyInput.val();
       arpeggiatorBaseFrequency = $frequencyInput.val();
@@ -53,7 +52,10 @@ $(document).ready(function(){
   });
 
   $gainInput.on('mousemove change', function(){
-    gainNode.gain.value = $gainInput.val();
+    if (($gainInput.val() !== gainNode.gain.value) && ($gainInput.val() !== lfoBaseGain )){
+      gainNode.gain.value = $gainInput.val();
+      restartLFO();
+    }
   });
 
   $shapeInput.on('change', function(){
