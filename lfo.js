@@ -2,7 +2,7 @@
 var lfoAmplitude = 0;
 var lfoFrequency = 100;
 var lfoShape = 'square';
-var lfoDestination = 'filter';
+var lfoDestination = 'gain';
 var lfoProcess;
 var lfoCount = 0
 var lfoBaseGain;
@@ -17,7 +17,11 @@ function startLFO(){
     lfoBaseFilterFrequency = filterNode.frequency.value;
   }
 
-  lfoProcess = squareWave();
+  if (lfoShape === "square"){
+    lfoProcess = squareWave();
+  } else {
+    lfoProcess = sineWave();
+  }
   lfoStarted = true;
 }
 
@@ -30,6 +34,7 @@ function stopLFO(){
     filterNode.frequency.value = lfoBaseFilterFrequency;
   }
   lfoStarted = false;
+  lfoCount = 0;
 }
 
 function restartLFO(){
@@ -45,11 +50,9 @@ function squareWave(){
     // console.log(gainNode.gain.value);
     if (lfoCount % 2 === 0) {
       if (lfoDestination === "gain") {
-
         gainNode.gain.value = lfoBaseGain - (lfoBaseGain * lfoAmplitude);
       } else {
         filterNode.frequency.value = lfoBaseFilterFrequency - (lfoBaseFilterFrequency * lfoAmplitude)
-        console.log('filter modulated');
       }
       lfoCount = 0;
     } else {
@@ -62,6 +65,24 @@ function squareWave(){
     lfoCount += 1;
   }, lfoFrequency)
   return newProcess;
+}
+
+function sineWave(){
+  // f(t) = amplitude * sin( period * t)
+  newProcess = setInterval(function(){
+    if (lfoCount === lfoFrequency){
+      lfoCount = 0;
+    } else{
+      if (lfoDestination === "gain") {
+        gainNode.gain.value = lfoBaseGain - (lfoBaseGain * lfoAmplitude * Math.sin((1 / lfoFrequency) * lfoCount));
+        console.log(lfoCount);
+        console.log(gainNode.gain.value);
+      } else {
+        filterNode.frequency.value = lfoBaseFilterFrequency - (lfoBaseFilterFrequency * lfoAmplitude * Math.sin((1 / lfoFrequency) * lfoCount));
+      }
+    }
+    lfoCount += 1
+  }, lfoFrequency)
 }
 
 $(document).ready(function(){
@@ -90,6 +111,11 @@ $(document).ready(function(){
 
   $lfoDestination.on('change', function(){
     lfoDestination = $lfoDestination.val();
+    restartLFO();
+  })
+
+  $lfoShape.on('change', function(){
+    lfoShape = $lfoShape.val();
     restartLFO();
   })
 
