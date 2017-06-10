@@ -71,12 +71,12 @@ $(document).ready(function(){
     filterNode.Q.value = $resonanceInput.val();
   });
 
-  $startButton.on('click', function(e){
+  $startButton.on('touchend click', function(e){
     e.preventDefault();
     startSynth();
   });
 
-  $stopButton.on('click', function(e){
+  $stopButton.on('touchend click', function(e){
     e.preventDefault();
     stopSynth();
   });
