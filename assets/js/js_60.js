@@ -3,27 +3,10 @@
 // resonance:  maxValue: 3.4028 minValue: -3.4028
 
 // TODO toggle start/stop button display
+// make sure the right AudioContext is created for browser
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
-  window.AudioContext = window.AudioContext || window.webkitAudioContext;
-  var audioCtx = new window.AudioContext();
-  var gainNode = audioCtx.createGain();
-  var filterNode = audioCtx.createBiquadFilter();
-  var oscillatorNode = audioCtx.createOscillator();
-  var delayNode = audioCtx.createDelay(5.0);
-
-  filterNode.connect(gainNode);
-  gainNode.connect(audioCtx.destination);
-
-  gainNode.gain.value = 0.5
-
-  filterNode.type = 'lowpass'
-  filterNode.frequency.value = 22000
-  filterNode.Q.value = 3
-
-  oscillatorNode.frequency.value = 110
-  oscillatorNode.type = 'square'
-
-  oscillatorNode.start();
+// var js60;
 
 $(document).ready(function(){
   // INPUTS
@@ -38,57 +21,59 @@ $(document).ready(function(){
   var $stopButton = $('#stopButton');
 
   // SET INITIAL SLIDER VALUES
-  $frequencyInput.val(oscillatorNode.frequency.value);
-  $gainInput.val(gainNode.gain.value);
-  $filterFreqInput.val(filterNode.frequency.value);
-  $resonanceInput.val(filterNode.Q.value);
+  // $frequencyInput.val(oscillatorNode.frequency.value);
+  // $gainInput.val(gainNode.gain.value);
+  // $filterFreqInput.val(filterNode.frequency.value);
+  // $resonanceInput.val(filterNode.Q.value);
 
 
-  // LISTENERS
+  // // LISTENERS
   $frequencyInput.on('mousemove change', function(){
-    if (($frequencyInput.val() !== oscillatorNode.frequency.value) && ($frequencyInput.val() !== arpeggiatorBaseFrequency ) ){
-      oscillatorNode.frequency.value = $frequencyInput.val();
-      arpeggiatorBaseFrequency = $frequencyInput.val();
+    // if synth is created and the value differs from the oscillator freq
+    if (typeof js60 !== 'undefined' && $frequencyInput.val() !== js60.oscillatorFreq) {
+      js60.oscillatorFreq = $frequencyInput.val();
+      // arpeggiatorBaseFrequency = $frequencyInput.val();
     }
   });
 
   $gainInput.on('mousemove change', function(){
-    if (($gainInput.val() !== gainNode.gain.value) && ($gainInput.val() !== lfoBaseGain )){
-      gainNode.gain.value = $gainInput.val();
-      restartLFO();
+    if(synthPresent() && $gainInput.val() !== js60.gain){
+      js60.gain = $gainInput.val();
     }
   });
 
-  $shapeInput.on('change', function(){
-    oscillatorNode.type = $shapeInput.val();
-  });
+  // $shapeInput.on('change', function(){
+  //   oscillatorNode.type = $shapeInput.val();
+  // });
 
-  $filterFreqInput.on('mousemove change', function(){
-    filterNode.frequency.value  = $filterFreqInput.val();
-  });
+  // $filterFreqInput.on('mousemove change', function(){
+  //   filterNode.frequency.value  = $filterFreqInput.val();
+  // });
 
-  $resonanceInput.on('mousemove change', function(){
-    console.log('resonance: ' + $resonanceInput.val())
-    filterNode.Q.value = $resonanceInput.val();
-  });
+  // $resonanceInput.on('mousemove change', function(){
+  //   console.log('resonance: ' + $resonanceInput.val())
+  //   filterNode.Q.value = $resonanceInput.val();
+  // });
 
   $startButton.on('touchend click', function(e){
     e.preventDefault();
-    audioCtx = new window.AudioContext
-    startSynth();
+    // create Synth instance if not yet created
+    if (!synthPresent()) {
+      js60 = new Synth(window.AudioContext);
+    }
+    js60.start();
   });
 
   $stopButton.on('touchend click', function(e){
-    e.preventDefault();
-    stopSynth();
+    // stop synth if it has been created
+    if (synthPresent()) {
+      js60.stop();
+    }
   });
 
 })
 
-function startSynth(){
-  oscillatorNode.connect(filterNode);
+function synthPresent() {
+  return typeof js60 !== 'undefined'
 }
 
-function stopSynth(){
-  oscillatorNode.disconnect(filterNode);
-}
