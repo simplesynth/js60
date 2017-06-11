@@ -74,6 +74,7 @@ $(document).ready(function(){
 
   $startButton.on('touchend click', function(e){
     e.preventDefault();
+    audioCtx = new window.AudioContext
     startSynth();
   });
 
