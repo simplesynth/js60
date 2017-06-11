@@ -25,6 +25,10 @@ class Synth {
     return true;
   }
 
+  // setSliders(){
+
+  // }
+
   start() {
     this._oscillatorNode.connect(this._filterNode);
   }
@@ -64,9 +68,9 @@ class Synth {
     this._oscillatorNode.type = type;
   }
 
-  set filterType(type) {
-    this._filterNode.type = type;
-  }
+  // set filterType(type) {
+  //   this._filterNode.type = type;
+  // }
 
   set filterFreq(frequency) {
     this._filterNode.frequency.value = frequency;

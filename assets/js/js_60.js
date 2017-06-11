@@ -42,18 +42,23 @@ $(document).ready(function(){
     }
   });
 
-  // $shapeInput.on('change', function(){
-  //   oscillatorNode.type = $shapeInput.val();
-  // });
+  $shapeInput.on('change', function(){
+    if (synthPresent()) {
+      js60.oscillatorType = $shapeInput.val();
+    }
+  });
 
-  // $filterFreqInput.on('mousemove change', function(){
-  //   filterNode.frequency.value  = $filterFreqInput.val();
-  // });
+  $filterFreqInput.on('mousemove change', function(){
+    if (synthPresent()){
+      js60.filterFreq = $filterFreqInput.val();
+    }
+  });
 
-  // $resonanceInput.on('mousemove change', function(){
-  //   console.log('resonance: ' + $resonanceInput.val())
-  //   filterNode.Q.value = $resonanceInput.val();
-  // });
+  $resonanceInput.on('mousemove change', function(){
+    if (synthPresent()) {
+      js60.resonance = $resonanceInput.val();
+    }
+  });
 
   $startButton.on('touchend click', function(e){
     e.preventDefault();
