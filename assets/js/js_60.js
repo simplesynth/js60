@@ -4,7 +4,8 @@
 
 // TODO toggle start/stop button display
 
-  var audioCtx = new AudioContext();
+  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+  var audioCtx = new window.AudioContext();
   var gainNode = audioCtx.createGain();
   var filterNode = audioCtx.createBiquadFilter();
   var oscillatorNode = audioCtx.createOscillator();
