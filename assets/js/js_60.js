@@ -5,7 +5,7 @@
 // TODO toggle start/stop button display
 // make sure the right AudioContext is created for browser
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
-
+var clickingFreqInput = false;
 // var js60;
 
 $(document).ready(function(){
@@ -16,21 +16,26 @@ $(document).ready(function(){
   var $filterFreqInput = $('input#filterFreqInput');
   var $resonanceInput = $('input#resonanceInput');
 
+  var $arpSpeed = $('#arpSpeed');
+  var $arpOctaves = $('#arpOctaves');
+  var $arpDirection = $('#arpDirection');
+
   // BUTTONS
   var $startButton = $('#startButton');
   var $stopButton = $('#stopButton');
 
-  // SET INITIAL SLIDER VALUES
-  // $frequencyInput.val(oscillatorNode.frequency.value);
-  // $gainInput.val(gainNode.gain.value);
-  // $filterFreqInput.val(filterNode.frequency.value);
-  // $resonanceInput.val(filterNode.Q.value);
+  var $arpStart = $('#arpStart');
+  var $arpStop = $('#arpStop');
 
+  // LISTENERS
 
-  // // LISTENERS
+  // fix for mousemove without click
+  $frequencyInput.on('mousedown', function(){ clickingFreqInput = true; })
+  $frequencyInput.on('mouseup', function(){ clickingFreqInput = false; })
   $frequencyInput.on('mousemove change', function(){
     // if synth is created and the value differs from the oscillator freq
-    if (typeof js60 !== 'undefined' && $frequencyInput.val() !== js60.oscillatorFreq) {
+    if (synthPresent() && clickingFreqInput === true) {
+      console.log('freq changed');
       js60.oscillatorFreq = $frequencyInput.val();
       // arpeggiatorBaseFrequency = $frequencyInput.val();
     }
@@ -62,19 +67,54 @@ $(document).ready(function(){
 
   $startButton.on('touchend click', function(e){
     e.preventDefault();
-    // create Synth instance if not yet created
+    // create Synth instance and initialize sliders if not yet created
     if (!synthPresent()) {
       js60 = new Synth(window.AudioContext);
+      js60.initializeSliders($frequencyInput, $gainInput, $shapeInput, $filterFreqInput, $resonanceInput);
     }
     js60.start();
   });
 
   $stopButton.on('touchend click', function(e){
+    e.preventDefault();
     // stop synth if it has been created
     if (synthPresent()) {
       js60.stop();
     }
   });
+
+    // ARPEGGIATOR LISTENERS
+  $arpStart.on('click', function(e){
+    e.preventDefault();
+    if(synthPresent()){
+      js60.startArpeggiator();
+    }
+  });
+
+  $arpStop.on('click', function(e){
+    e.preventDefault();
+    if (synthPresent() && js60.arpeggiator.isRunning()){
+      js60.stopArpeggiator();
+    }
+  });
+
+  $arpSpeed.on('change', function(){
+    if (synthPresent()){
+      js60.arpeggiator.speed = $arpSpeed.val();
+    }
+  });
+
+  $arpOctaves.on('change', function(){
+    if (synthPresent()){
+      js60.arpeggiator.octaves = $arpOctaves.val();
+    }
+  })
+
+  $arpDirection.on('change', function(){
+    if(synthPresent()){
+      js60.arpeggiator.direction = $arpDirection.val();
+    }
+  })
 
 })
 

@@ -4,7 +4,8 @@ class Synth {
     this._gainNode = this._audioCtx.createGain();
     this._filterNode = this._audioCtx.createBiquadFilter();
     this._oscillatorNode = this._audioCtx.createOscillator();
-    this._connected = this.initialize();
+    this._arpeggiator = new Arpeggiator(this._oscillatorNode);
+    this._initialized = this.initialize();
   }
 
   initialize() {
@@ -25,9 +26,13 @@ class Synth {
     return true;
   }
 
-  // setSliders(){
-
-  // }
+  initializeSliders($frequencyInput, $gainInput, $shapeInput, $filterFreqInput, $resonanceInput){
+    $frequencyInput.val(this._oscillatorNode.frequency.value);
+    $gainInput.val(this._gainNode.gain.value);
+    $shapeInput.val(this._oscillatorNode.type);
+    $filterFreqInput.val(this._filterNode.frequency.value);
+    $resonanceInput.val(this._filterNode.Q.value);
+  }
 
   start() {
     this._oscillatorNode.connect(this._filterNode);
@@ -35,6 +40,21 @@ class Synth {
 
   stop() {
     this._oscillatorNode.disconnect(this._filterNode);
+  }
+
+  startArpeggiator(){
+    console.log('arp called');
+    this._arpeggiator.start(this._oscillatorNode);
+  }
+
+  stopArpeggiator(){
+    this._arpeggiator.stop(this._oscillatorNode);
+  }
+
+  // TODO: move logic to Arpeggiator
+  restartArpeggiator(){
+    this._arpeggiator.stop(this._oscillatorNode);
+    this._arpeggiator.start(this._oscillatorNode);
   }
 
   // GETTERS
@@ -50,8 +70,12 @@ class Synth {
     return this._oscillatorNode.frequency.value;
   }
 
-  get connected(){
-    return this._connected;
+  get initialized(){
+    return this._initialized;
+  }
+
+  get arpeggiator(){
+    return this._arpeggiator;
   }
 
   // SETTERS
@@ -62,15 +86,13 @@ class Synth {
 
   set oscillatorFreq(frequency) {
     this._oscillatorNode.frequency.value = frequency;
+    // set arpeggiator baseFreq
+    this._arpeggiator.baseFreq = frequency;
   }
 
   set oscillatorType(type) {
     this._oscillatorNode.type = type;
   }
-
-  // set filterType(type) {
-  //   this._filterNode.type = type;
-  // }
 
   set filterFreq(frequency) {
     this._filterNode.frequency.value = frequency;

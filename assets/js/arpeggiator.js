@@ -1,129 +1,123 @@
-// TODO rename all vars, methods, elements to arpeggiator
-// TODO don't restart the arpeggiator unless it's already on
-// TODO add directionality: up, down, up/down
-// TODO add 'Input' to jquery var names
-var arpeggiatorBaseFrequency = oscillatorNode.frequency.value;
-var arpeggiatorCount = 1
-var arpeggiatorSpeed = 1000
-var arpeggiatorOctaves = 2
-var arpeggiatorDirection = 'up'
-
-var arpeggiator;
-
-function startArpeggiator() {
-  if (arpeggiatorDirection === 'up'){
-    arpeggiator = upSequence();
-  } else if (arpeggiatorDirection === 'down'){
-    arpeggiator = downSequence();
-  } else if (arpeggiatorDirection === 'up/down'){
-    arpeggiator = upDownSequence();
+class Arpeggiator {
+  constructor(oscillator) {
+    this._oscillator = oscillator;
+    this._baseFreq = oscillator.frequency.value;
+    this._count = 1
+    this._speed = 1000
+    this._octaves = 2
+    this._direction = 'up'
+    this._process = false;
   }
-}
 
-function stopArpeggiator(){
-  if (arpeggiator) {
-    oscillatorNode.frequency.value = arpeggiatorBaseFrequency;
-    arpeggiatorCount = 1;
-    clearInterval(arpeggiator);
+  // initializeSliders(){
+
+  // }
+
+  start() {
+    // if not already running
+    if (!this.isRunning()){
+      this._baseFreq = this._oscillator.frequency.value;
+      if (this._direction === 'up'){
+        this._process = this.upSequence(this._oscillator);
+      } else if (this._direction === 'down'){
+        this._process = this.downSequence(this._oscillator);
+      } else if (this._direction === 'up/down'){
+        this._process = this.upDownSequence(this._oscillator);
+      }
+    }
   }
-}
 
-function upSequence(){
-  interval = setInterval(function(){
-      if ( arpeggiatorCount >= arpeggiatorOctaves) {
-        oscillatorNode.frequency.value = arpeggiatorBaseFrequency;
-        arpeggiatorCount = 1
+  stop(){
+    if (this.isRunning()) {
+      this._oscillator.frequency.value = this._baseFreq;
+      clearInterval(this._process);
+      this._count = 1;
+      this._process = false;
+    }
+  }
+
+  restart(){
+    if (this.isRunning()) {
+      this.stop();
+      this.start();
+    }
+  }
+
+  upSequence(){
+    var self = this;
+    var interval = setInterval(function(){
+        if ( self._count >= self._octaves) {
+          self._oscillator.frequency.value = self._baseFreq;
+          self._count = 1
+        } else {
+          self._oscillator.frequency.value = self._baseFreq * (self._count + 1)
+          self._count += 1;
+        };
+      }, this._speed);
+    return interval;
+  }
+
+  downSequence(){
+    var self = this;
+    var interval = setInterval(function(){
+      if (self._count >= self._octaves){
+        self._oscillator.frequency.value = self._baseFreq;
+        self._count = 1;
       } else {
-        console.log(arpeggiatorCount);
-        oscillatorNode.frequency.value = arpeggiatorBaseFrequency * (arpeggiatorCount + 1)
-        arpeggiatorCount += 1;
-      };
-    }, arpeggiatorSpeed);
-  return interval;
+        console.log(self._count);
+        self._oscillator.frequency.value = self._baseFreq / (self._count + 1);
+        self._count += 1;
+      }
+    }, this._speed);
+    return interval;
+  }
+
+  upDownSequence(){
+    var self = this;
+    var multiplier = 1
+    var interval = setInterval(function(){
+      if (self._count >= self._octaves){
+        multiplier = -1;
+        self._count += multiplier;
+      } else if (self._count <= -self._octaves){
+        multiplier = 1;
+        self._count += multiplier;
+      } else {
+        self._oscillator.frequency.value = self._baseFreq * (self._count + multiplier)
+        self._count += multiplier;
+      }
+      console.log(self._count);
+    }, this._speed);
+    return interval;
+  }
+
+  isRunning() {
+    // process is not false
+    return (this._process !== false)
+  }
+
+  get baseFreq() {
+    return this._baseFreq;
+  }
+
+  set speed(speed) {
+    this._speed = speed;
+    this.restart();
+  }
+
+  set octaves(octaves) {
+    this._octaves = octaves;
+    this.restart();
+  }
+
+  set direction(direction) {
+    this._direction = direction;
+    this.restart();
+  }
+
+  set baseFreq(frequency){
+    this._baseFreq = frequency;
+    this.restart();
+  }
+
 }
-
-function downSequence(){
-  interval = setInterval(function(){
-    if (arpeggiatorCount >= arpeggiatorOctaves){
-      oscillatorNode.frequency.value = arpeggiatorBaseFrequency;
-      arpeggiatorCount = 1;
-    } else {
-      console.log(arpeggiatorCount);
-      oscillatorNode.frequency.value = arpeggiatorBaseFrequency / (arpeggiatorCount + 1);
-      arpeggiatorCount += 1;
-    }
-  }, arpeggiatorSpeed);
-  return interval;
-}
-
-function upDownSequence(){
-  var multiplier = 1
-  interval = setInterval(function(){
-    if (arpeggiatorCount >= arpeggiatorOctaves){
-      multiplier = -1;
-      arpeggiatorCount += multiplier;
-    } else if (arpeggiatorCount <= -arpeggiatorOctaves){
-      multiplier = 1;
-      arpeggiatorCount += multiplier;
-    } else {
-      oscillatorNode.frequency.value = arpeggiatorBaseFrequency * (arpeggiatorCount + multiplier)
-      arpeggiatorCount += multiplier;
-    }
-
-    console.log(arpeggiatorCount);
-  }, arpeggiatorSpeed);
-  return interval;
-}
-
-$(document).ready(function(){
-  // INPUTS
-  $arpSpeed = $('#arpSpeed');
-  $arpOctaves = $('#arpOctaves');
-  $arpDirection = $('#arpDirection');
-
-  // BUTTONS
-  $arpStart = $('#arpStart');
-  $arpStop = $('#arpStop');
-
-  // LISTENERS
-  $arpStart.on('click', function(e){
-    e.preventDefault();
-    startArpeggiator();
-  });
-
-  $arpStop.on('click', function(e){
-    e.preventDefault();
-    stopArpeggiator();
-    stopSynth();
-  });
-
-  $arpSpeed.on('change', function(){
-    arpeggiatorSpeed = $arpSpeed.val();
-    // TODO don't start arpeggiator if it isn't currently running
-    if (arpeggiator) {
-      stopArpeggiator();
-      startArpeggiator();
-    }
-  });
-
-  $arpOctaves.on('change', function(){
-    arpeggiatorOctaves = $arpOctaves.val();
-    if(arpeggiator) {
-      stopArpeggiator();
-      startArpeggiator();
-    }
-  })
-
-  $arpDirection.on('change', function(){
-    arpeggiatorDirection = $arpDirection.val();
-    if(arpeggiator) {
-      stopArpeggiator();
-      startArpeggiator();
-    }
-  })
-
-  // INITIALIZE SLIDERS
-  $arpSpeed.val(arpeggiatorSpeed);
-  $arpOctaves.val(arpeggiatorOctaves);
-  $arpDirection.val(arpeggiatorDirection)
-});
