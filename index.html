@@ -12,7 +12,7 @@
     crossorigin="anonymous">
   </script>
   <script type="text/javascript" src="assets/js/arpeggiator.js"></script>
-  <!-- <script type="text/javascript" src="assets/js/lfo.js"></script> -->
+  <script type="text/javascript" src="assets/js/lfo.js"></script>
   <script type="text/javascript" src="assets/js/synth.js"></script>
   <script type="text/javascript" src="assets/js/js_60.js"></script>
 
@@ -115,20 +115,20 @@
               <h4>shape</h4>
               <select id="lfoShape">
                 <option value="square">square</option>
-                <option value="sine">sine</option>
+                <!-- <option value="sine">sine</option> -->
               </select>
             </div>
             <div id="destination">
               <h4>dest</h4>
               <select id="lfoDestination">
-                <option value="filter">filter</option>
                 <option value="gain">gain</option>
+                <option value="filter">filter</option>
               </select>
             </div>
           </div>
           <div class="col-lg-8">
             <h4>amplitude</h4>
-            <input type="range" name="lfoAmplitude" id="lfoAmplitude" min="0.0" max="0.99" step="0.01">
+            <input type="range" name="lfoAmplitude" id="lfoAmplitude" min="0.0" max="0.99" step="0.01" value="0">
             <h4>frequency</h4>
             <input type="range" name="lfoFrequency" id="lfoFrequency" min="10" max="500">
           </div>

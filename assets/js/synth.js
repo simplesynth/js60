@@ -5,6 +5,7 @@ class Synth {
     this._filterNode = this._audioCtx.createBiquadFilter();
     this._oscillatorNode = this._audioCtx.createOscillator();
     this._arpeggiator = new Arpeggiator(this._oscillatorNode);
+    this._lfo = new LFO(this._gainNode, this._filterNode);
     this._initialized = this.initialize();
   }
 
@@ -78,10 +79,14 @@ class Synth {
     return this._arpeggiator;
   }
 
+  get lfo() {
+    return this._lfo;
+  }
+
   // SETTERS
   set gain(gain) {
     this._gainNode.gain.value = gain;
-    // this._lfo.restart();
+    this._lfo.baseGain = gain;
   }
 
   set oscillatorFreq(frequency) {
@@ -96,6 +101,7 @@ class Synth {
 
   set filterFreq(frequency) {
     this._filterNode.frequency.value = frequency;
+    this._lfo.baseFilterFreq = frequency;
   }
 
   set resonance(resonance) {

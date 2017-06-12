@@ -6,6 +6,8 @@
 // make sure the right AudioContext is created for browser
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 var clickingFreqInput = false;
+var clickingFilterFreqInput = false;
+var clickingGainInput = false;
 // var js60;
 
 $(document).ready(function(){
@@ -19,6 +21,11 @@ $(document).ready(function(){
   var $arpSpeed = $('#arpSpeed');
   var $arpOctaves = $('#arpOctaves');
   var $arpDirection = $('#arpDirection');
+
+  var $lfoAmplitude = $('#lfoAmplitude');
+  var $lfoFrequency = $('#lfoFrequency');
+  var $lfoDestination = $('#lfoDestination');
+  var $lfoShape = $('#lfoShape');
 
   // BUTTONS
   var $startButton = $('#startButton');
@@ -41,8 +48,10 @@ $(document).ready(function(){
     }
   });
 
+  $gainInput.on('mousedown', function(){ clickingGainInput = true; })
+  $gainInput.on('mouseup', function(){ clickingGainInput = false; })
   $gainInput.on('mousemove change', function(){
-    if(synthPresent() && $gainInput.val() !== js60.gain){
+    if(synthPresent() && clickingGainInput === true){
       js60.gain = $gainInput.val();
     }
   });
@@ -53,8 +62,10 @@ $(document).ready(function(){
     }
   });
 
+  $filterFreqInput.on('mousedown', function(){ clickingFilterFreqInput = true; })
+  $filterFreqInput.on('mouseup', function(){ clickingFilterFreqInput = false; })
   $filterFreqInput.on('mousemove change', function(){
-    if (synthPresent()){
+    if (synthPresent() && clickingFilterFreqInput === true){
       js60.filterFreq = $filterFreqInput.val();
     }
   });
@@ -113,6 +124,25 @@ $(document).ready(function(){
   $arpDirection.on('change', function(){
     if(synthPresent()){
       js60.arpeggiator.direction = $arpDirection.val();
+    }
+  })
+
+    // LFO LISTENERS
+  $lfoAmplitude.on('change', function(){
+    if (synthPresent()){
+      js60.lfo.amplitude = $lfoAmplitude.val();
+    }
+  })
+
+  $lfoFrequency.on('change', function(){
+    if (synthPresent()){
+      js60.lfo.frequency = $lfoFrequency.val();
+    }
+  })
+
+  $lfoDestination.on('change', function(){
+    if (synthPresent()){
+      js60.lfo.destination = $lfoDestination.val();
     }
   })
 
