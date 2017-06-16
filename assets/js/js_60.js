@@ -146,6 +146,12 @@ $(document).ready(function(){
     }
   })
 
+  $lfoShape.on('change', function(){
+    if (synthPresent()){
+      js60.lfo.shape = $lfoShape.val();
+    }
+  })
+
 })
 
 function synthPresent() {

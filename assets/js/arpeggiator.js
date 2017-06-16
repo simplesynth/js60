@@ -101,7 +101,7 @@ class Arpeggiator {
   }
 
   set speed(speed) {
-    this._speed = speed;
+    this._speed = -speed;
     this.restart();
   }
 

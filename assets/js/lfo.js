@@ -70,23 +70,25 @@ class LFO {
     return newProcess;
   }
 
-  // sineWave(){
-  //   // f(t) = amplitude * sin( period * t)
-  //    var newProcess = setInterval(function(){
-  //     if (this._count === this._frequency){
-  //       this._count = 0;
-  //     } else{
-  //       if (this._destination === "gain") {
-  //         this._gainNode.gain.value = this._baseGain - (this._baseGain * this._amplitude * Math.sin((1 / this._frequency) * this._count));
-  //         console.log(this._count);
-  //         console.log(this._gainNode.gain.value);
-  //       } else {
-  //         this._filterNode.frequency.value = this._baseFilterFreq - (this._baseFilterFreq * this._amplitude * Math.sin((1 / this._frequency) * this._count));
-  //       }
-  //     }
-  //     this._count += 1
-  //   }, this._frequency)
-  // }
+  sineWave(){
+    var self = this;
+    // f(t) = amplitude * sin( period * t)
+     var newProcess = setInterval(function(){
+      if (self._count === self._frequency){
+        self._count = 0;
+      } else{
+        if (self._destination === "gain") {
+          self._gainNode.gain.value = self._baseGain - (self._baseGain * self._amplitude * Math.sin((1 / self._frequency) * self._count));
+          console.log(self._count);
+          console.log(self._gainNode.gain.value);
+        } else {
+          self._filterNode.frequency.value = self._baseFilterFreq - (self._baseFilterFreq * self._amplitude * Math.sin((1 / self._frequency) * self._count));
+        }
+      }
+      self._count += 1
+    }, this._frequency)
+  }
+
   isRunning() {
     return (this._started !== false);
   }
@@ -97,7 +99,7 @@ class LFO {
   }
 
   set frequency(frequency) {
-    this._frequency = frequency;
+    this._frequency = -frequency;
     this.restart();
   }
 
@@ -118,6 +120,11 @@ class LFO {
     if (this._destination === 'filter') {
       this.restart();
     }
+  }
+
+  set shape(shape) {
+    this._shape = shape;
+    this.restart();
   }
 }
 
