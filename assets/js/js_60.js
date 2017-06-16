@@ -4,7 +4,6 @@
 
 // TODO toggle start/stop button display
 // make sure the right AudioContext is created for browser
-window.AudioContext = window.AudioContext || window.webkitAudioContext;
 var clickingFreqInput = false;
 var clickingFilterFreqInput = false;
 var clickingGainInput = false;
@@ -80,7 +79,7 @@ $(document).ready(function(){
     e.preventDefault();
     // create Synth instance and initialize sliders if not yet created
     if (!synthPresent()) {
-      js60 = new Synth(window.AudioContext);
+      js60 = new Synth();
       js60.initializeSliders($frequencyInput, $gainInput, $shapeInput, $filterFreqInput, $resonanceInput);
     }
     js60.start();

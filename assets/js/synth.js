@@ -1,6 +1,6 @@
 class Synth {
-  constructor(audioContext) {
-    this._audioCtx = new audioContext();
+  constructor() {
+    this._audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     this._gainNode = this._audioCtx.createGain();
     this._filterNode = this._audioCtx.createBiquadFilter();
     this._oscillatorNode = this._audioCtx.createOscillator();
