@@ -39,7 +39,7 @@ $(document).ready(function(){
   // fix for mousemove without click
   $frequencyInput.on('touchstart mousedown', function(){ clickingFreqInput = true; })
   $frequencyInput.on('touchend mouseup', function(){ clickingFreqInput = false; })
-  $frequencyInput.on('mousemove change', function(){
+  $frequencyInput.on('touchmove mousemove change', function(){
     // if synth is created and the value differs from the oscillator freq
     if (synthPresent() && clickingFreqInput === true) {
       console.log('freq changed');
@@ -50,7 +50,7 @@ $(document).ready(function(){
 
   $gainInput.on('touchstart mousedown', function(){ clickingGainInput = true; })
   $gainInput.on('touchstart mouseup', function(){ clickingGainInput = false; })
-  $gainInput.on('mousemove change', function(){
+  $gainInput.on('touchmove mousemove change', function(){
     if(synthPresent() && clickingGainInput === true){
       js60.gain = $gainInput.val();
     }
@@ -64,13 +64,13 @@ $(document).ready(function(){
 
   $filterFreqInput.on('touchstart mousedown', function(){ clickingFilterFreqInput = true; })
   $filterFreqInput.on('touchend mouseup', function(){ clickingFilterFreqInput = false; })
-  $filterFreqInput.on('mousemove change', function(){
+  $filterFreqInput.on('touchmove mousemove change', function(){
     if (synthPresent() && clickingFilterFreqInput === true){
       js60.filterFreq = $filterFreqInput.val();
     }
   });
 
-  $resonanceInput.on('mousemove change', function(){
+  $resonanceInput.on('touchmove mousemove change', function(){
     if (synthPresent()) {
       js60.resonance = $resonanceInput.val();
     }
