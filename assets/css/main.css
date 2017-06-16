@@ -11,6 +11,9 @@
   display: inline;
 }
 
+.footer {
+  min-height: 45px;
+}
 
 
 /* Smartphones (portrait and landscape) ----------- */
