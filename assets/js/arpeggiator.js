@@ -72,24 +72,6 @@ class Arpeggiator {
     return interval;
   }
 
-  // upDownSequence(){
-  //   var self = this;
-  //   var multiplier = 1
-  //   var interval = setInterval(function(){
-  //     if (self._count >= self._octaves){
-  //       multiplier = -1;
-  //       self._count += multiplier;
-  //     } else if (self._count <= -self._octaves){
-  //       multiplier = 1;
-  //       self._count += multiplier;
-  //     } else {
-  //       self._oscillator.frequency.value = self._baseFreq * (self._count + multiplier)
-  //       self._count += multiplier;
-  //     }
-  //     console.log(self._count);
-  //   }, this._speed);
-  //   return interval;
-  // }
   upDownSequence(){
     var self = this;
     var multiplier = -1
@@ -106,8 +88,6 @@ class Arpeggiator {
     }, this._speed)
     return interval;
   }
-
-
 
   isRunning() {
     // process is not false
