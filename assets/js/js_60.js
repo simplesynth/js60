@@ -10,7 +10,7 @@ var clickingGainInput = false;
 // var js60;
 
 $(document).ready(function(){
-  window.rangetouch.set("thumbWidth",20)
+  // window.rangetouch.set("thumbWidth",20)
 
   // INPUTS
   var $frequencyInput = $('input#frequency_input');
