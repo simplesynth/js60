@@ -14,7 +14,7 @@ $(document).ready(function(){
   // window.rangetouch.set("thumbWidth",20)
 
   // INPUTS
-  var $frequencyInput = $('input#frequency_input');
+  var $frequencyInput = $('input#frequencyInput');
   var $gainInput = $('input#gainInput');
   var $subGainInput = $('input#subGainInput');
   var $shapeInput = $('#shapeInput');
@@ -41,7 +41,7 @@ $(document).ready(function(){
 
   // fix for mousemove without click
   $frequencyInput.on('touchstart mousedown', function(){ clickingFreqInput = true; })
-  $frequencyInput.on('touchend mouseup', function(){ clickingFreqInput = false; })
+  $frequencyInput.on('touchend mouseup', function(){ clickingFreqInput = false;  })
   $frequencyInput.on('touchmove mousemove change', function(){
     // if synth is created and the value differs from the oscillator freq
     if (synthPresent() && clickingFreqInput === true) {
@@ -51,7 +51,7 @@ $(document).ready(function(){
   });
 
   $gainInput.on('touchstart mousedown', function(){ clickingGainInput = true; })
-  $gainInput.on('touchstart mouseup', function(){ clickingGainInput = false; })
+  $gainInput.on('touchend mouseup', function(){ clickingGainInput = false; })
   $gainInput.on('touchmove mousemove change', function(){
     if(synthPresent() && clickingGainInput === true){
       js60.gain = $gainInput.val();
@@ -59,9 +59,10 @@ $(document).ready(function(){
   });
 
   $subGainInput.on('touchstart mousedown', function(){ clickingSubGainInput = true; })
-  $subGainInput.on('touchstart mouseup', function(){ clickingSubGainInput = false; })
+  $subGainInput.on('touchend mouseup', function(){ clickingSubGainInput = false; })
   $subGainInput.on('touchmove mousemove change', function(){
     if(synthPresent() && clickingSubGainInput === true){
+      console.log('sub gain input');
       js60.subGain = $subGainInput.val();
     }
   });
