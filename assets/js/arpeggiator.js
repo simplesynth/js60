@@ -1,6 +1,7 @@
 class Arpeggiator {
-  constructor(oscillator) {
+  constructor(oscillator, subOscillator) {
     this._oscillator = oscillator;
+    this._subOscillator = subOscillator;
     this._baseFreq = oscillator.frequency.value;
     this._count = 1
     this._speed = 1000
@@ -18,18 +19,18 @@ class Arpeggiator {
     if (!this.isRunning()){
       this._baseFreq = this._oscillator.frequency.value;
       if (this._direction === 'up'){
-        this._process = this.upSequence(this._oscillator);
+        this._process = this.upSequence();
       } else if (this._direction === 'down'){
-        this._process = this.downSequence(this._oscillator);
+        this._process = this.downSequence();
       } else if (this._direction === 'up/down'){
-        this._process = this.upDownSequence(this._oscillator);
+        this._process = this.upDownSequence();
       }
     }
   }
 
   stop(){
     if (this.isRunning()) {
-      this._oscillator.frequency.value = this._baseFreq;
+      this.oscillatorFreq = this._baseFreq;
       clearInterval(this._process);
       this._count = 1;
       this._process = false;
@@ -47,10 +48,10 @@ class Arpeggiator {
     var self = this;
     var interval = setInterval(function(){
         if ( self._count >= self._octaves) {
-          self._oscillator.frequency.value = self._baseFreq;
+          self.oscillatorFreq = self._baseFreq;
           self._count = 1
         } else {
-          self._oscillator.frequency.value = self._baseFreq * (self._count + 1)
+          self.oscillatorFreq = self._baseFreq * (self._count + 1)
           self._count += 1;
         };
       }, this._speed);
@@ -61,11 +62,11 @@ class Arpeggiator {
     var self = this;
     var interval = setInterval(function(){
       if (self._count >= self._octaves){
-        self._oscillator.frequency.value = self._baseFreq;
+        self.oscillatorFreq = self._baseFreq;
         self._count = 1;
       } else {
         console.log(self._count);
-        self._oscillator.frequency.value = self._baseFreq / (self._count + 1);
+        self.oscillatorFreq = self._baseFreq / (self._count + 1);
         self._count += 1;
       }
     }, this._speed);
@@ -81,7 +82,7 @@ class Arpeggiator {
       if ((Math.abs(self._count) >= self._octaves) || (Math.abs(self._count) <= 1)) {
         multiplier *= -1;
       }
-      self._oscillator.frequency.value = self._baseFreq * (self._count);
+      self.oscillatorFreq = self._baseFreq * (self._count);
 
       self._count += multiplier;
 
@@ -116,6 +117,11 @@ class Arpeggiator {
   set baseFreq(frequency){
     this._baseFreq = frequency;
     this.restart();
+  }
+
+  set oscillatorFreq(frequency) {
+    self._oscillator.frequency.value = frequency;
+    self._subOscillator.frequency.value = (self._oscillator.frequency.value / 2);
   }
 
 }
