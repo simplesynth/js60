@@ -65,7 +65,6 @@ class Arpeggiator {
         self.oscillatorFreq = self._baseFreq;
         self._count = 1;
       } else {
-        console.log(self._count);
         self.oscillatorFreq = self._baseFreq / (self._count + 1);
         self._count += 1;
       }
@@ -120,8 +119,8 @@ class Arpeggiator {
   }
 
   set oscillatorFreq(frequency) {
-    self._oscillator.frequency.value = frequency;
-    self._subOscillator.frequency.value = (self._oscillator.frequency.value / 2);
+    this._oscillator.frequency.value = frequency;
+    this._subOscillator.frequency.value = (this._oscillator.frequency.value / 2);
   }
 
 }

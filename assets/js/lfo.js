@@ -79,8 +79,8 @@ class LFO {
       } else{
         if (self._destination === "gain") {
           self._gainNode.gain.value = self._baseGain - (self._baseGain * self._amplitude * Math.sin((1 / self._frequency) * self._count));
-          console.log(self._count);
-          console.log(self._gainNode.gain.value);
+          // console.log(self._count);
+          // console.log(self._gainNode.gain.value);
         } else {
           self._filterNode.frequency.value = self._baseFilterFreq - (self._baseFilterFreq * self._amplitude * Math.sin((1 / self._frequency) * self._count));
         }

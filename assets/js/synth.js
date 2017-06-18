@@ -27,14 +27,14 @@ class Synth {
 
     this._gainNode.gain.value = 0.5;
     this._preGain.gain.value = 1;
-    this._oscillatorGain.gain.value = 1
-    this._subOscillatorGain.gain.value = 1
+    this._oscillatorGain.gain.value = 1;
+    this._subOscillatorGain.gain.value = 0;
 
     this._filterNode.type = 'lowpass';
     this._filterNode.frequency.value = 22000;
     this._filterNode.Q.value = 3
 
-    this._oscillatorNode.frequency.value = 880;
+    this._oscillatorNode.frequency.value = 220;
     this._oscillatorNode.type = 'square';
 
     this._subOscillatorNode.frequency.value = (this._oscillatorNode.frequency.value / 2);
@@ -45,9 +45,10 @@ class Synth {
     return true;
   }
 
-  initializeSliders($frequencyInput, $gainInput, $shapeInput, $filterFreqInput, $resonanceInput){
+  initializeSliders($frequencyInput, $gainInput, $subGainInput, $shapeInput, $filterFreqInput, $resonanceInput){
     $frequencyInput.val(this._oscillatorNode.frequency.value);
     $gainInput.val(this._gainNode.gain.value);
+    $subGainInput.val(this._subOscillatorGain.gain.value);
     $shapeInput.val(this._oscillatorNode.type);
     $filterFreqInput.val(this._filterNode.frequency.value);
     $resonanceInput.val(this._filterNode.Q.value);
@@ -62,7 +63,6 @@ class Synth {
   }
 
   startArpeggiator(){
-    console.log('arp called');
     this._arpeggiator.start(this._oscillatorNode);
   }
 
@@ -105,6 +105,10 @@ class Synth {
   set gain(gain) {
     this._gainNode.gain.value = gain;
     this._lfo.baseGain = gain;
+  }
+
+  set subGain(gain) {
+    this._subOscillatorGain.gain.value = gain;
   }
 
   set oscillatorFreq(frequency) {

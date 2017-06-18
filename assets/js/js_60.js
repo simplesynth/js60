@@ -7,6 +7,7 @@
 var clickingFreqInput = false;
 var clickingFilterFreqInput = false;
 var clickingGainInput = false;
+var clickingSubGainInput = false;
 // var js60;
 
 $(document).ready(function(){
@@ -15,6 +16,7 @@ $(document).ready(function(){
   // INPUTS
   var $frequencyInput = $('input#frequency_input');
   var $gainInput = $('input#gainInput');
+  var $subGainInput = $('input#subGainInput');
   var $shapeInput = $('#shapeInput');
   var $filterFreqInput = $('input#filterFreqInput');
   var $resonanceInput = $('input#resonanceInput');
@@ -43,7 +45,6 @@ $(document).ready(function(){
   $frequencyInput.on('touchmove mousemove change', function(){
     // if synth is created and the value differs from the oscillator freq
     if (synthPresent() && clickingFreqInput === true) {
-      console.log('freq changed');
       js60.oscillatorFreq = $frequencyInput.val();
       // arpeggiatorBaseFrequency = $frequencyInput.val();
     }
@@ -54,6 +55,14 @@ $(document).ready(function(){
   $gainInput.on('touchmove mousemove change', function(){
     if(synthPresent() && clickingGainInput === true){
       js60.gain = $gainInput.val();
+    }
+  });
+
+  $subGainInput.on('touchstart mousedown', function(){ clickingSubGainInput = true; })
+  $subGainInput.on('touchstart mouseup', function(){ clickingSubGainInput = false; })
+  $subGainInput.on('touchmove mousemove change', function(){
+    if(synthPresent() && clickingSubGainInput === true){
+      js60.subGain = $subGainInput.val();
     }
   });
 
@@ -82,7 +91,7 @@ $(document).ready(function(){
     // create Synth instance and initialize sliders if not yet created
     if (!synthPresent()) {
       js60 = new Synth();
-      js60.initializeSliders($frequencyInput, $gainInput, $shapeInput, $filterFreqInput, $resonanceInput);
+      js60.initializeSliders($frequencyInput, $gainInput, $subGainInput, $shapeInput, $filterFreqInput, $resonanceInput);
     }
     js60.start();
   });
