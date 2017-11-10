@@ -12,7 +12,7 @@ class Synth {
     this._subOscillatorGain = this._audioCtx.createGain();
 
     this._arpeggiator = new Arpeggiator(this._oscillatorNode, this._subOscillatorNode);
-    this._lfo = new LFO(this._gainNode, this._filterNode);
+
     this._initialized = this.initialize();
   }
 
@@ -41,6 +41,10 @@ class Synth {
 
     this._oscillatorNode.start();
     this._subOscillatorNode.start();
+
+    // LFO must be initialized after the initial gain and filter values are set,
+    // otherwise the base values will be incorrect
+    this._lfo = new LFO(this._gainNode, this._filterNode);
 
     return true;
   }
