@@ -12,6 +12,7 @@ class Synth {
     this._subOscillatorGain = this._audioCtx.createGain();
 
     this._arpeggiator = new Arpeggiator(this._oscillatorNode, this._subOscillatorNode);
+    this._sequencer = new Sequencer(this._oscillatorNode, this._subOscillatorNode)
 
     this._initialized = this.initialize();
   }
@@ -121,6 +122,8 @@ class Synth {
     this._subOscillatorNode.frequency.value = (this._oscillatorNode.frequency.value / 2);
     // set arpeggiator baseFreq
     this._arpeggiator.baseFreq = frequency;
+    // set sequencer baseFreq
+    this._sequencer.baseFreq = frequency;
   }
 
   set oscillatorType(type) {
