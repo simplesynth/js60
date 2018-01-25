@@ -51,19 +51,13 @@ class LFO {
   squareWave(){
     var self = this;
     var newProcess = setInterval(function(){
-      if (self._count % 2 === 0) {
-        if (self._destination === "gain") {
-          self._gainNode.gain.value = self._baseGain - (self._baseGain * self._amplitude);
-        } else {
-          self._filterNode.frequency.value = self._baseFilterFreq - (self._baseFilterFreq * self._amplitude)
-        }
-        self._count = 0;
-      } else {
-        if (self._destination === 'gain') {
-          self._gainNode.gain.value = self._baseGain;
-        } else {
-          self._filterNode.frequency.value = self._baseFilterFreq;
-        }
+      if (self._destination === 'gain') {
+        var square = new SquareWave(self._amplitude, self._baseGain, self._count)
+        self._gainNode.gain.value = square.calculate();
+      }
+      else {
+        var square = new SquareWave(self._amplitude, self._baseFilterFreq, self._count)
+        self._filterNode.frequency.value = square.calculate();
       }
       self._count += 1;
     }, this._frequency)
@@ -72,21 +66,20 @@ class LFO {
 
   sineWave(){
     var self = this;
-    // f(t) = amplitude * sin( period * t)
-     var newProcess = setInterval(function(){
-      if (self._count === self._frequency){
-        self._count = 0;
-      } else{
-        if (self._destination === "gain") {
-          self._gainNode.gain.value = self._baseGain - (self._baseGain * self._amplitude * Math.sin((1 / self._frequency) * self._count));
-          // console.log(self._count);
-          // console.log(self._gainNode.gain.value);
-        } else {
-          self._filterNode.frequency.value = self._baseFilterFreq - (self._baseFilterFreq * self._amplitude * Math.sin((1 / self._frequency) * self._count));
-        }
+
+    // f(x) = A sin(wt + p)
+    var newProcess = setInterval(function(){
+      if (self._destination === "gain") {
+        var sine = new SineWave(self._frequency, self._amplitude, self._baseGain, 1, self._count)
+        self._gainNode.gain.value = sine.calculate();
+      } else {
+        // set filter frequency
+        var sine = new SineWave(self._frequency, self._amplitude, self._baseFilterFreq, self._filterNode.frequency.maxValue, self._count)
+        self._filterNode.frequency.value = sine.calculate();
       }
-      self._count += 1
-    }, this._frequency)
+    self._count += 1
+    }, 1)
+    return newProcess;
   }
 
   isRunning() {
@@ -127,6 +120,41 @@ class LFO {
     this.restart();
   }
 }
+
+class SquareWave {
+  constructor(amplitude, initialValue, count) {
+    this._amplitude = amplitude;
+    this._initialValue = initialValue;
+    this._count = count;
+  }
+
+  calculate() {
+    if (this._count % 2 == 0) { return this._initialValue - (this._initialValue * this._amplitude); }
+    else { return this._initialValue; }
+  }
+}
+
+class SineWave {
+  constructor(frequency, amplitude, initialValue, highBound, count) {
+    this._frequency = frequency;
+    this._amplitude = amplitude * (highBound / 2);
+    this._initialValue = initialValue;
+    this._highBound = highBound;
+    this._count = count;
+  }
+
+  calculate() {
+    return this.withinBounds(this._initialValue + this._amplitude * Math.sin((1 / this._frequency) * this._count));
+  }
+
+  withinBounds(value) {
+    if (value > this._highBound) { return this._highBound; }
+    else if (value < 0 ) { return 0 }
+    else { return value }
+  }
+}
+
+
 
 
 
