@@ -1,10 +1,11 @@
 class Sequencer {
-  constructor(oscillator, subOscillator) {
+  constructor(oscillator, subOscillator, gain) {
     this._sequence = [0]
     this._speed = 1000
     this._oscillator = oscillator;
     this._subOscillator = subOscillator;
     this._baseFreq = oscillator.frequency.value;
+    this._envelope = new Envelope(gain);
     this._process = false
     this._count = 0
     this._isRunning = false
@@ -17,11 +18,19 @@ class Sequencer {
       // go back to first note at the end of the sequence
       if (self._count > self._sequence.length - 1) { self._count = 0 }
 
-      var interval = self.semitoneToFreq(self._sequence[self._count])
-      self.oscillatorFreq = self._baseFreq + interval
+      self.playNote();
 
       self._count += 1
     }, this._speed);
+  }
+
+  playNote() {
+    // stop envelope cycle
+    this._envelope.stop();
+    var interval = this.semitoneToFreq(this._sequence[this._count])
+    this.oscillatorFreq = this._baseFreq + interval
+    // begin envelope cycle
+    this._envelope.start();
   }
 
   restart() {

@@ -12,7 +12,7 @@ class Synth {
     this._subOscillatorGain = this._audioCtx.createGain();
 
     this._arpeggiator = new Arpeggiator(this._oscillatorNode, this._subOscillatorNode);
-    this._sequencer = new Sequencer(this._oscillatorNode, this._subOscillatorNode)
+    this._sequencer = new Sequencer(this._oscillatorNode, this._subOscillatorNode, this._gainNode.gain)
 
     this._initialized = this.initialize();
   }
