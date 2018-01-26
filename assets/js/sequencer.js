@@ -17,8 +17,8 @@ class Sequencer {
       // go back to first note at the end of the sequence
       if (self._count > self._sequence.length - 1) { self._count = 0 }
 
-      var interval = self.noteToFrequency(self._sequence[self._count])
-      self.oscillatorFreq = (self._baseFreq) + interval
+      var interval = self.semitoneToFreq(self._sequence[self._count])
+      self.oscillatorFreq = self._baseFreq + interval
 
       self._count += 1
     }, this._speed);
@@ -43,8 +43,11 @@ class Sequencer {
 
   // add function to quitremove note
 
-  noteToFrequency(note) {
-    return 100 * note;
+  semitoneToFreq(note) {
+    // distance to the octave is equal to the base frequency (440 * 2 = 880, 880 - 440 = 440)
+    // divide by 12 semitones to get frequency for 1 semitone
+    var interval = (this._baseFreq / 12)
+    return interval * note;
   }
 
   set speed(speed) {
@@ -59,6 +62,5 @@ class Sequencer {
 
   set baseFreq(frequency){
     this._baseFreq = frequency;
-    this.restart();
   }
 }
