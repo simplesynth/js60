@@ -43,6 +43,8 @@ class Synth {
     this._oscillatorNode.start();
     this._subOscillatorNode.start();
 
+    this._sequencer.baseFreq = this._oscillatorNode.frequency.value;
+
     // LFO must be initialized after the initial gain and filter values are set,
     // otherwise the base values will be incorrect
     this._lfo = new LFO(this._gainNode, this._filterNode);
@@ -117,6 +119,7 @@ class Synth {
   }
 
   set oscillatorFreq(frequency) {
+    frequency = parseInt(frequency);
     this._oscillatorNode.frequency.value = frequency;
     // set sub oscillator frequency
     this._subOscillatorNode.frequency.value = (this._oscillatorNode.frequency.value / 2);

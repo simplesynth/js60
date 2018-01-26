@@ -7,24 +7,30 @@ class Sequencer {
     this._baseFreq = oscillator.frequency.value;
     this._process = false
     this._count = 0
+    this._isRunning = false
   }
 
   start() {
+    this._isRunning = true
     var self = this;
     this._process = setInterval(function(){
-      if (self._count > self._sequence.length - 1) { console.log('reset count'); self._count = 0}
+      // go back to first note at the end of the sequence
+      if (self._count > self._sequence.length - 1) { self._count = 0 }
 
-      self.oscillatorFreq = self._baseFreq + self.note_to_frequency(self._sequence[self._count])
+      var interval = self.noteToFrequency(self._sequence[self._count])
+      self.oscillatorFreq = (self._baseFreq) + interval
+
       self._count += 1
-
     }, this._speed);
   }
 
   restart() {
-    clearInterval(this._process);
-    this._count = 0
-    this._process = false
-    this.start();
+    if (this._isRunning === true) {
+      clearInterval(this._process);
+      this._count = 0
+      this._process = false
+      this.start();
+    }
   }
 
   add_note(note) {
@@ -37,8 +43,7 @@ class Sequencer {
 
   // add function to quitremove note
 
-  note_to_frequency(note) {
-    console.log('note: ' + note);
+  noteToFrequency(note) {
     return 100 * note;
   }
 
@@ -48,7 +53,6 @@ class Sequencer {
   }
 
   set oscillatorFreq(frequency) {
-    console.log(frequency);
     this._oscillator.frequency.value = frequency;
     this._subOscillator.frequency.value = (this._oscillator.frequency.value / 2);
   }
