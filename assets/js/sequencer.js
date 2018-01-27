@@ -5,6 +5,7 @@ class Sequencer {
     this._oscillator = oscillator;
     this._subOscillator = subOscillator;
     this._baseFreq = oscillator.frequency.value;
+    this._gain = gain;
     this._envelope = new Envelope(gain);
     this._process = false
     this._count = 0
@@ -18,7 +19,10 @@ class Sequencer {
       // go back to first note at the end of the sequence
       if (self._count > self._sequence.length - 1) { self._count = 0 }
 
-      self.playNote();
+      if(self._sequence[self._count] !== 'x') {
+        self.playNote();
+      }
+      else{ this._gain.value = 0 }
 
       self._count += 1
     }, this._speed);

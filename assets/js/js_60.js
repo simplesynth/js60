@@ -62,7 +62,6 @@ $(document).ready(function(){
   $subGainInput.on('touchend mouseup', function(){ clickingSubGainInput = false; })
   $subGainInput.on('touchmove mousemove change', function(){
     if(synthPresent() && clickingSubGainInput === true){
-      console.log('sub gain input');
       js60.subGain = $subGainInput.val();
     }
   });

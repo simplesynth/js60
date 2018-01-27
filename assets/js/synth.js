@@ -112,6 +112,7 @@ class Synth {
   set gain(gain) {
     this._gainNode.gain.value = gain;
     this._lfo.baseGain = gain;
+    this._sequencer._envelope._destinationBaseValue = parseFloat(gain);
   }
 
   set subGain(gain) {
@@ -119,7 +120,7 @@ class Synth {
   }
 
   set oscillatorFreq(frequency) {
-    frequency = parseInt(frequency);
+    frequency = parseFloat(frequency);
     this._oscillatorNode.frequency.value = frequency;
     // set sub oscillator frequency
     this._subOscillatorNode.frequency.value = (this._oscillatorNode.frequency.value / 2);
