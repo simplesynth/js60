@@ -34,10 +34,12 @@ class Sequencer {
   }
 
   playNote() {
+    this.indicatorLightOff();
     // stop envelope cycle
     this._envelope.stop();
     var interval = this.semitoneToFreq(this._sequence[this._count])
     this.oscillatorFreq = this._baseFreq + interval
+    this.indicatorLightOn();
     // begin envelope cycle
     this._envelope.start();
   }
@@ -49,6 +51,14 @@ class Sequencer {
       this._process = false
       this.start();
     }
+  }
+
+  indicatorLightOn(){
+    $('span.indicatorLight[data-index="'+this._count+'"]').css('background-color', '#d9534f');
+  }
+
+  indicatorLightOff(){
+    $('span.indicatorLight').css('background-color', 'transparent');
   }
 
   add_note(note) {

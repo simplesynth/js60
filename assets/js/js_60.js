@@ -154,7 +154,7 @@ $(document).ready(function(){
     var nextIndex = js60.sequencer._sequence.length;
     js60.sequencer.add_note(0);
     // add new input with correct id, heading, and data-index attribute
-    $sequencerRow.append('<div class="col-lg-2"><h4>'+(nextIndex+1)+'</h4><input type="range" name="sequencerNote-'+nextIndex+'" class="sequencerNote" id="sequencerNote-'+nextIndex+'" data-index="'+nextIndex+'" min="-12" max="12" step="1"></div>');
+    $sequencerRow.append('<div class="col-lg-2"><h4 class="indexNo">'+(nextIndex+1)+'</h4><span class= "indicatorLight" data-index="'+nextIndex+'"></span><input type="range" name="sequencerNote-'+nextIndex+'" class="sequencerNote" id="sequencerNote-'+nextIndex+'" data-index="'+nextIndex+'" min="-12" max="12" step="1"></div>');
   })
 
 
