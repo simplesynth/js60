@@ -9,6 +9,7 @@ var clickingFilterFreqInput = false;
 var clickingGainInput = false;
 var clickingSubGainInput = false;
 var clickingSequencerSpeed = false;
+var clickingSequencerNote = false;
 // var js60;
 
 $(document).ready(function(){
@@ -42,6 +43,7 @@ $(document).ready(function(){
   var $arpStop = $('#arpStop');
 
   var $sequencerSpeed = $('#sequencerSpeed');
+  var $sequencerNote = $('.sequencerNote');
 
   // LISTENERS
 
@@ -133,6 +135,18 @@ $(document).ready(function(){
       js60.sequencer.speed = $sequencerSpeed.val();
     }
   });
+
+  $sequencerNote.on('touchstart mousedown', function(){ clickingSequencerNote = true; })
+  $sequencerNote.on('touchend mouseup', function(){ clickingSequencerNote = false; })
+  $sequencerNote.on('touchmove mousemove change', function(){
+    if(synthPresent() && clickingSequencerNote === true){
+      var index = parseInt(this.getAttribute('data-index'));
+      var interval = parseInt(this.value);
+      js60.sequencer.change_note_at(index, interval);
+    }
+  });
+
+
 
 
   //   // ARPEGGIATOR LISTENERS

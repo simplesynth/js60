@@ -38,15 +38,19 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <h4 class="panel-title">
-              <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">...sequencer...</a>
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">sequencer >>></a>
             </h4>
           </div>
           <div id="collapseOne" class="panel-collapse collapse">
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-lg-2">
+            <div class="panel-body" style="padding-top: 0; padding-bottom: 0;">
+              <div id="sequencer-row" class="row">
+                <div class="col-lg-2" style="background-color: rgba(0,0,0,0.025);">
                   <h4>speed</h4>
                   <input type="range" name="sequencerSpeed" id="sequencerSpeed" min="100" max="2000">
+                </div>
+                <div class="col-lg-2">
+                  <h4>1</h4>
+                  <input type="range" name="sequencerNote-0" class="sequencerNote" id="sequencerNote-0" data-index="0" min="-12" max="12" step="1">
                 </div>
               </div>
             </div>
