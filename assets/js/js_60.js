@@ -44,6 +44,8 @@ $(document).ready(function(){
 
   var $sequencerSpeed = $('#sequencerSpeed');
   var $sequencerNote = $('.sequencerNote');
+  var $addNote = $('#addNote');
+  var $sequencerRow = $('#sequencer-row');
 
   // LISTENERS
 
@@ -136,15 +138,24 @@ $(document).ready(function(){
     }
   });
 
-  $sequencerNote.on('touchstart mousedown', function(){ clickingSequencerNote = true; })
-  $sequencerNote.on('touchend mouseup', function(){ clickingSequencerNote = false; })
-  $sequencerNote.on('touchmove mousemove change', function(){
+  $sequencerRow.on('touchstart mousedown', $sequencerNote, function(){ clickingSequencerNote = true; })
+  $sequencerRow.on('touchend mouseup', $sequencerNote, function(){ clickingSequencerNote = false; })
+  $sequencerRow.on('touchmove mousemove change', $sequencerNote, function(e){
     if(synthPresent() && clickingSequencerNote === true){
-      var index = parseInt(this.getAttribute('data-index'));
-      var interval = parseInt(this.value);
+      var index = parseInt(e.target.getAttribute('data-index'));
+      var interval = parseInt(e.target.value);
       js60.sequencer.change_note_at(index, interval);
     }
   });
+
+  $addNote.on('click', function(e) {
+    e.preventDefault();
+    // get number of sequencer notes
+    var nextIndex = js60.sequencer._sequence.length;
+    js60.sequencer.add_note(0);
+    // add new input with correct id, heading, and data-index attribute
+    $sequencerRow.append('<div class="col-lg-2"><h4>'+(nextIndex+1)+'</h4><input type="range" name="sequencerNote-'+nextIndex+'" class="sequencerNote" id="sequencerNote-'+nextIndex+'" data-index="'+nextIndex+'" min="-12" max="12" step="1"></div>');
+  })
 
 
 
