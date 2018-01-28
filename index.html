@@ -82,7 +82,7 @@
     <br><br>
 
     <div class="container" id="arpeggiatorControls">
-      <div class="col-lg-3">
+      <!-- <div class="col-lg-3">
         <h3>arpeggiator</h3>
         <div id="startStop">
           <a href="#" id="arpStart" class="btn btn-sm btn-success">
@@ -113,6 +113,21 @@
               <option value='up/down'>up/down</option>
             </select>
           </div>
+        </div>
+      </div> -->
+      <div class="col-lg-3">
+        <h3>envelope</h3>
+        <div id="attack">
+          <h4>attack</h4>
+          <input type="range" name="attackTime" id="attackTime" min="1" max="1000" step="1">
+        </div>
+        <div id="delay">
+          <h4>delay</h4>
+          <input type="range" name="delayTime" id ="delayTime" min="1" max="1000" step="1">
+        </div>
+        <div id="sustain">
+          <h4>sustain</h4>
+          <input type="range" name="sustainLevel" id="sustainLevel" min="0" max="1" step="0.01">
         </div>
       </div>
       <div class="col-lg-4">

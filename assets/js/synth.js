@@ -44,6 +44,7 @@ class Synth {
     this._subOscillatorNode.start();
 
     this._sequencer.baseFreq = this._oscillatorNode.frequency.value;
+    this.envelope._destinationBaseValue = this._gainNode.gain.value;
 
     // LFO must be initialized after the initial gain and filter values are set,
     // otherwise the base values will be incorrect
@@ -52,13 +53,16 @@ class Synth {
     return true;
   }
 
-  initializeSliders($frequencyInput, $gainInput, $subGainInput, $shapeInput, $filterFreqInput, $resonanceInput){
+  initializeSliders($frequencyInput, $gainInput, $subGainInput, $shapeInput, $filterFreqInput, $resonanceInput, $attackTime, $delayTime, $sustainLevel){
     $frequencyInput.val(this._oscillatorNode.frequency.value);
     $gainInput.val(this._gainNode.gain.value);
     $subGainInput.val(this._subOscillatorGain.gain.value);
     $shapeInput.val(this._oscillatorNode.type);
     $filterFreqInput.val(this._filterNode.frequency.value);
     $resonanceInput.val(this._filterNode.Q.value);
+    $attackTime.val(this.envelope.attackTime);
+    $delayTime.val(this.envelope.delayTime);
+    $sustainLevel.val(this.envelope.sustainLevel);
   }
 
   start() {
@@ -106,6 +110,14 @@ class Synth {
 
   get lfo() {
     return this._lfo;
+  }
+
+  get envelope() {
+    return this._sequencer._envelope
+  }
+
+  get sequencer() {
+    return this._sequencer;
   }
 
   // SETTERS

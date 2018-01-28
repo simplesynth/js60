@@ -21,9 +21,12 @@ $(document).ready(function(){
   var $filterFreqInput = $('input#filterFreqInput');
   var $resonanceInput = $('input#resonanceInput');
 
-  var $arpSpeed = $('#arpSpeed');
-  var $arpOctaves = $('#arpOctaves');
-  var $arpDirection = $('#arpDirection');
+  var $attackTime = $('input#attackTime');
+  var $delayTime = $('input#delayTime');
+  var $sustainLevel = $('input#sustainLevel');
+  // var $arpSpeed = $('#arpSpeed');
+  // var $arpOctaves = $('#arpOctaves');
+  // var $arpDirection = $('#arpDirection');
 
   var $lfoAmplitude = $('#lfoAmplitude');
   var $lfoFrequency = $('#lfoFrequency');
@@ -46,7 +49,6 @@ $(document).ready(function(){
     // if synth is created and the value differs from the oscillator freq
     if (synthPresent() && clickingFreqInput === true) {
       js60.oscillatorFreq = $frequencyInput.val();
-      // arpeggiatorBaseFrequency = $frequencyInput.val();
     }
   });
 
@@ -91,7 +93,7 @@ $(document).ready(function(){
     // create Synth instance and initialize sliders if not yet created
     if (!synthPresent()) {
       js60 = new Synth();
-      js60.initializeSliders($frequencyInput, $gainInput, $subGainInput, $shapeInput, $filterFreqInput, $resonanceInput);
+      js60.initializeSliders($frequencyInput, $gainInput, $subGainInput, $shapeInput, $filterFreqInput, $resonanceInput, $attackTime, $delayTime, $sustainLevel);
     }
     js60.start();
   });
@@ -104,38 +106,55 @@ $(document).ready(function(){
     }
   });
 
-    // ARPEGGIATOR LISTENERS
-  $arpStart.on('click', function(e){
+  // ENVELOPE LISTENERS
+  $attackTime.on('change', function(e){
     e.preventDefault();
-    if(synthPresent()){
-      js60.startArpeggiator();
-    }
+    js60.envelope.attackTime = parseFloat($attackTime.val());
   });
 
-  $arpStop.on('click', function(e){
+  $delayTime.on('change', function(e){
     e.preventDefault();
-    if (synthPresent() && js60.arpeggiator.isRunning()){
-      js60.stopArpeggiator();
-    }
+    js60.envelope.delayTime = parseFloat($delayTime.val());
   });
 
-  $arpSpeed.on('change', function(){
-    if (synthPresent()){
-      js60.arpeggiator.speed = $arpSpeed.val();
-    }
+  $sustainLevel.on('change', function(e){
+    e.preventDefault();
+    js60.envelope.sustainLevel = parseFloat($sustainLevel.val());
   });
 
-  $arpOctaves.on('change', function(){
-    if (synthPresent()){
-      js60.arpeggiator.octaves = $arpOctaves.val();
-    }
-  })
 
-  $arpDirection.on('change', function(){
-    if(synthPresent()){
-      js60.arpeggiator.direction = $arpDirection.val();
-    }
-  })
+  //   // ARPEGGIATOR LISTENERS
+  // $arpStart.on('click', function(e){
+  //   e.preventDefault();
+  //   if(synthPresent()){
+  //     js60.startArpeggiator();
+  //   }
+  // });
+
+  // $arpStop.on('click', function(e){
+  //   e.preventDefault();
+  //   if (synthPresent() && js60.arpeggiator.isRunning()){
+  //     js60.stopArpeggiator();
+  //   }
+  // });
+
+  // $arpSpeed.on('change', function(){
+  //   if (synthPresent()){
+  //     js60.arpeggiator.speed = $arpSpeed.val();
+  //   }
+  // });
+
+  // $arpOctaves.on('change', function(){
+  //   if (synthPresent()){
+  //     js60.arpeggiator.octaves = $arpOctaves.val();
+  //   }
+  // })
+
+  // $arpDirection.on('change', function(){
+  //   if(synthPresent()){
+  //     js60.arpeggiator.direction = $arpDirection.val();
+  //   }
+  // })
 
     // LFO LISTENERS
   $lfoAmplitude.on('change', function(){

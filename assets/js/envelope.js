@@ -4,27 +4,29 @@ class Envelope {
     // the max value
     this._destinationBaseValue = destination.value;
     // 0-1
-    this._amplitude = 0.5;
+    // this._amplitude = 0.5;
     // times in milliseconds
     this._attackTime = 1;
-    this._delayTime = 50;
+    this._delayTime = 1;
     // 0-1
-    this._sustainLevel = 0;
+    this._sustainLevel = 1;
     this._continue = false;
   }
 
   start() {
-    this._destination.value = this._destinationBaseValue;
+    this._destination.value = 0;
     this._continue = true;
     this.attackCycle();
   }
 
   attackCycle(count = 0) {
     var self = this;
+    // if (this.attackTime > 1) { this.destinationValue = 0 }
     setTimeout(function() {
       if (this._continue === false) {
         self._destination.value = 0;
       }
+      else if(self.attackTime === 1) { self.destinationValue = self._destinationBaseValue; self.delayCycle(); }
       else{
         // console.log('incrementing gain by: ' + parseFloat(self._destinationBaseValue) / parseFloat(self._attackTime))
         // console.log(self._destination.value)
@@ -39,7 +41,8 @@ class Envelope {
   delayCycle(count = 0) {
     var self = this;
     setTimeout(function() {
-      if (this._continue === false) { self._destination.value = 0;}
+      if (self._continue === false) { self._destination.value = 0; }
+      else if (self.delayTime === 1) { self.destinationValue = self._destinationBaseValue * self._sustainLevel;}
       else {
          // distance to target sustain level from current level
          // subtract the current gain level times the target sustain level from the current gain level
@@ -52,6 +55,7 @@ class Envelope {
         self._destination.value -= distanceToSustainLevel / parseFloat(self._delayTime)
         // console.log(self._destination.value)
         if( count < self._delayTime) { self.delayCycle(count + 1) }
+        // ensure that value is left at sustain level after delay cycle
         else { self._destination.value = self._destinationBaseValue * self._sustainLevel; }
       }
 
@@ -59,6 +63,35 @@ class Envelope {
   }
 
   stop() {
+    this._destination.value = 0;
     this._continue = false;
+  }
+
+  get attackTime() {
+    return this._attackTime;
+  }
+
+  get delayTime() {
+    return this._delayTime;
+  }
+
+  get sustainLevel() {
+    return this._sustainLevel;
+  }
+
+  set attackTime(value) {
+    this._attackTime = value;
+  }
+
+  set delayTime(value) {
+    this._delayTime = value;
+  }
+
+  set sustainLevel(value) {
+    this._sustainLevel = value;
+  }
+
+  set destinationValue(value) {
+    this._destination.value = value
   }
 }
