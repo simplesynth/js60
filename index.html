@@ -13,6 +13,7 @@
     crossorigin="anonymous">
   </script>
   <!-- <script src="https://cdn.rangetouch.com/1.0.4/rangetouch.js" async></script> -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="assets/js/arpeggiator.js"></script>
   <script type="text/javascript" src="assets/js/envelope.js"></script>
   <script type="text/javascript" src="assets/js/sequencer.js"></script>
@@ -30,6 +31,28 @@
       <a href="#" class="btn btn-danger" id="stopButton">
         STOP
       </a>
+    </div>
+    <br><br>
+    <div class="bs-example">
+      <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">...sequencer...</a>
+            </h4>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse">
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-lg-2">
+                  <h4>speed</h4>
+                  <input type="range" name="sequencerSpeed" id="sequencerSpeed" min="100" max="2000">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <br>

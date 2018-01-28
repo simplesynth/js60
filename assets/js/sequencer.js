@@ -29,6 +29,10 @@ class Sequencer {
     }, this._speed);
   }
 
+  stop() {
+    clearInterval(this._process);
+  }
+
   playNote() {
     // stop envelope cycle
     this._envelope.stop();

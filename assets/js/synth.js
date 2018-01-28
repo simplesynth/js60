@@ -53,7 +53,7 @@ class Synth {
     return true;
   }
 
-  initializeSliders($frequencyInput, $gainInput, $subGainInput, $shapeInput, $filterFreqInput, $resonanceInput, $attackTime, $delayTime, $sustainLevel){
+  initializeSliders($frequencyInput, $gainInput, $subGainInput, $shapeInput, $filterFreqInput, $resonanceInput, $attackTime, $delayTime, $sustainLevel, $sequencerSpeed){
     $frequencyInput.val(this._oscillatorNode.frequency.value);
     $gainInput.val(this._gainNode.gain.value);
     $subGainInput.val(this._subOscillatorGain.gain.value);
@@ -63,14 +63,17 @@ class Synth {
     $attackTime.val(this.envelope.attackTime);
     $delayTime.val(this.envelope.delayTime);
     $sustainLevel.val(this.envelope.sustainLevel);
+    $sequencerSpeed.val(this.sequencer.speed)
   }
 
   start() {
     this._preGain.connect(this._filterNode);
+    this.sequencer.start();
   }
 
   stop() {
     this._preGain.disconnect(this._filterNode);
+    this.sequencer.stop();
   }
 
   startArpeggiator(){

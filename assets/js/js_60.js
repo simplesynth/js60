@@ -8,6 +8,7 @@ var clickingFreqInput = false;
 var clickingFilterFreqInput = false;
 var clickingGainInput = false;
 var clickingSubGainInput = false;
+var clickingSequencerSpeed = false;
 // var js60;
 
 $(document).ready(function(){
@@ -39,6 +40,8 @@ $(document).ready(function(){
 
   var $arpStart = $('#arpStart');
   var $arpStop = $('#arpStop');
+
+  var $sequencerSpeed = $('#sequencerSpeed');
 
   // LISTENERS
 
@@ -93,7 +96,7 @@ $(document).ready(function(){
     // create Synth instance and initialize sliders if not yet created
     if (!synthPresent()) {
       js60 = new Synth();
-      js60.initializeSliders($frequencyInput, $gainInput, $subGainInput, $shapeInput, $filterFreqInput, $resonanceInput, $attackTime, $delayTime, $sustainLevel);
+      js60.initializeSliders($frequencyInput, $gainInput, $subGainInput, $shapeInput, $filterFreqInput, $resonanceInput, $attackTime, $delayTime, $sustainLevel, $sequencerSpeed);
     }
     js60.start();
   });
@@ -120,6 +123,15 @@ $(document).ready(function(){
   $sustainLevel.on('change', function(e){
     e.preventDefault();
     js60.envelope.sustainLevel = parseFloat($sustainLevel.val());
+  });
+
+  // SEQUENCER LISTENERS
+  $sequencerSpeed.on('touchstart mousedown', function(){ clickingSequencerSpeed = true; })
+  $sequencerSpeed.on('touchend mouseup', function(){ clickingSequencerSpeed = false; })
+  $sequencerSpeed.on('touchmove mousemove change', function(){
+    if(synthPresent() && clickingSequencerSpeed === true){
+      js60.sequencer.speed = $sequencerSpeed.val();
+    }
   });
 
 
