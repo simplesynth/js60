@@ -1,12 +1,13 @@
 class Sequencer {
-  constructor(oscillator, subOscillator, gain) {
+  constructor(oscillator, subOscillator, gain, audioCtx) {
     this._sequence = [0]
     this._speed = 1000
     this._oscillator = oscillator;
     this._subOscillator = subOscillator;
     this._baseFreq = oscillator.frequency.value;
     this._gain = gain;
-    this._envelope = new Envelope(gain);
+    this._audioCtx = audioCtx;
+    this._envelope = new Envelope(gain, this._audioCtx);
     this._process = false
     this._count = 0
     this._isRunning = false

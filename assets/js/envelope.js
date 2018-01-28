@@ -1,6 +1,7 @@
 class Envelope {
-  constructor(destination) {
+  constructor(destination, audioCtx) {
     this._destination = destination;
+    this._audioCtx = audioCtx;
     // the max value
     this._destinationBaseValue = destination.value;
     // 0-1
@@ -14,7 +15,7 @@ class Envelope {
   }
 
   start() {
-    this._destination.value = 0;
+    this.destinationValue = 0;
     this._continue = true;
     this.attackCycle();
   }
@@ -24,7 +25,7 @@ class Envelope {
     // if (this.attackTime > 1) { this.destinationValue = 0 }
     setTimeout(function() {
       if (this._continue === false) {
-        self._destination.value = 0;
+        this.destinationValue = 0;
       }
       else if(self.attackTime === 1) { self.destinationValue = self._destinationBaseValue; self.delayCycle(); }
       else{
@@ -41,7 +42,9 @@ class Envelope {
   delayCycle(count = 0) {
     var self = this;
     setTimeout(function() {
-      if (self._continue === false) { self._destination.value = 0; }
+      if (self._continue === false) {
+        this.destinationValue = 0;
+      }
       else if (self.delayTime === 1) { self.destinationValue = self._destinationBaseValue * self._sustainLevel;}
       else {
          // distance to target sustain level from current level
@@ -63,7 +66,7 @@ class Envelope {
   }
 
   stop() {
-    this._destination.value = 0;
+    this.destinationValue = 0;
     this._continue = false;
   }
 
