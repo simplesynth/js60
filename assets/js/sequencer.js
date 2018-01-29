@@ -23,7 +23,7 @@ class Sequencer {
       if(self._sequence[self._count] !== 'x') {
         self.playNote();
       }
-      else{ this._gain.value = 0 }
+      else{ self._gain.value = 0 }
 
       self._count += 1
     }, this._speed);

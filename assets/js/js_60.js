@@ -46,6 +46,12 @@ $(document).ready(function(){
   var $sequencerNote = $('.sequencerNote');
   var $addNote = $('#addNote');
   var $sequencerRow = $('#sequencer-row');
+  var $restButton = $('.restButton');
+  var $indicatorLight = $('.indicatorLight');
+  var $indicatorLightRest = $('.indicatorLight.rest');
+  var $sequencerOpenButton = $('#sequencerOpenButton')
+
+  $addNote.toggle();
 
   // LISTENERS
 
@@ -145,18 +151,55 @@ $(document).ready(function(){
       var index = parseInt(e.target.getAttribute('data-index'));
       var interval = parseInt(e.target.value);
       js60.sequencer.change_note_at(index, interval);
+      $('.indicatorLight[data-index="'+index+'"').removeClass('rest');
     }
   });
 
-  $addNote.on('click', function(e) {
+  $addNote.on('touchend click', function(e) {
     e.preventDefault();
     // get number of sequencer notes
     var nextIndex = js60.sequencer._sequence.length;
     js60.sequencer.add_note(0);
     // add new input with correct id, heading, and data-index attribute
     $sequencerRow.append('<div class="col-lg-2"><h4 class="indexNo">'+(nextIndex+1)+'</h4><span class= "indicatorLight" data-index="'+nextIndex+'"></span><input type="range" name="sequencerNote-'+nextIndex+'" class="sequencerNote" id="sequencerNote-'+nextIndex+'" data-index="'+nextIndex+'" min="-12" max="12" step="1"></div>');
+    addNewNoteListeners(nextIndex)
   })
 
+  $('.indicatorLight[data-index="0"]').on('touchend click', function(){
+    js60.sequencer.change_note_at(0, 'x')
+    $(this).addClass('rest');
+  });
+
+  $('.indicatorLight.rest[data-index="0"]').on('touchend click', function(){
+    $(this).removeClass('rest');
+    var note = $('#sequencerNote-0').val();
+    js60.sequencer.change_note_at(0, note);
+  });
+
+  function addNewNoteListeners(index) {
+    $('.indicatorLight[data-index="'+index+'"]').on('touchend click', function(){
+      js60.sequencer.change_note_at(index, 'x')
+      $(this).addClass('rest');
+    });
+
+    $('.indicatorLight.rest[data-index="'+index+'"]').on('touchend click', function(){
+      $(this).removeClass('rest');
+      var note = $('#sequencerNote-'+index+'').val();
+      js60.sequencer.change_note_at(index, note);
+    });
+  }
+
+  $sequencerOpenButton.on('touchend click', function(){
+     $addNote.toggle();
+  })
+
+  // $sequencerRow.on('click', $indicatorLight, function(e){
+  //   // change note to 'x'
+  //   var index = parseInt(e.target.getAttribute('data-index'));
+  //   js60.sequencer.change_note_at(index, 'x')
+  //   // add class to change indicator light color
+  //   $(e.target).addClass('rest')
+  // })
 
 
 

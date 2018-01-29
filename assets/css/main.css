@@ -22,6 +22,10 @@
   margin-left: 60px;
 }
 
+.indicatorLight.rest  {
+  border-style: dashed;
+}
+
 .indexNo {
   display: inline;
 }

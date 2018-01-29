@@ -38,7 +38,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <h4 class="panel-title" style="display: inline-block;">
-              <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">sequencer >>></a>
+              <a data-toggle="collapse" id="sequencerOpenButton" data-parent="#accordion" href="#collapseOne">sequencer >>></a>
             </h4>
             <a href="#" id="addNote" class="btn btn-success" style="display: inline-block; float: right; margin-top: -7px;">add note</a>
           </div>
@@ -50,7 +50,9 @@
                   <input type="range" name="sequencerSpeed" id="sequencerSpeed" min="100" max="2000">
                 </div>
                 <div class="col-lg-2">
-                  <h4 class="indexNo">1</h4><span class= "indicatorLight" data-index="0"></span>
+                  <!-- refactor to get index from parent div -->
+                  <h4 class="indexNo">1</h4>
+                  <span class= "indicatorLight" data-index="0"></span>
                   <input type="range" name="sequencerNote-0" class="sequencerNote" id="sequencerNote-0" data-index="0" min="-12" max="12" step="1">
                 </div>
               </div>
