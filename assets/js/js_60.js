@@ -151,7 +151,7 @@ $(document).ready(function(){
       var index = parseInt(e.target.getAttribute('data-index'));
       var interval = parseInt(e.target.value);
       js60.sequencer.change_note_at(index, interval);
-      $('.indicatorLight[data-index="'+index+'"').removeClass('rest');
+      $('.indicatorLight[data-index="'+index+'"]').removeClass('rest');
     }
   });
 
