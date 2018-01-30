@@ -30,6 +30,16 @@
   display: inline;
 }
 
+#sequencer-row {
+  margin-top: 34px;
+}
+
+#addNote {
+  display: inline-block;
+  float: right;
+  margin-top: -34px;
+}
+
 input[type=range] {
   -webkit-appearance: none;
   width: 100%;

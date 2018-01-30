@@ -92,3 +92,7 @@ class Sequencer {
     this._baseFreq = frequency;
   }
 }
+
+// examples
+
+// [12, "x", -4, 0, 7, 3, "x", 9, 3, "x", -3, 4]
