@@ -51,7 +51,7 @@ $(document).ready(function(){
   var $indicatorLightRest = $('.indicatorLight.rest');
   var $sequencerOpenButton = $('#sequencerOpenButton')
 
-  $addNote.toggle();
+  // $addNote.toggle();
 
   // LISTENERS
 
@@ -189,9 +189,9 @@ $(document).ready(function(){
     });
   }
 
-  $sequencerOpenButton.on('touchend click', function(){
-     $addNote.toggle();
-  })
+  // $sequencerOpenButton.on('touchend click', function(){
+  //    $addNote.toggle();
+  // })
 
   // $sequencerRow.on('click', $indicatorLight, function(e){
   //   // change note to 'x'
