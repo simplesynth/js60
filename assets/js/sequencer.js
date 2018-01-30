@@ -84,8 +84,8 @@ class Sequencer {
   }
 
   set oscillatorFreq(frequency) {
-    this._oscillator.frequency.value = frequency;
-    this._subOscillator.frequency.value = (this._oscillator.frequency.value / 2);
+    this._oscillator.frequency.setValueAtTime(frequency, 0);
+    this._subOscillator.frequency.setValueAtTime((frequency / 2), 0);
   }
 
   set baseFreq(frequency){

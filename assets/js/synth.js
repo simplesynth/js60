@@ -136,9 +136,9 @@ class Synth {
 
   set oscillatorFreq(frequency) {
     frequency = parseFloat(frequency);
-    this._oscillatorNode.frequency.value = frequency;
+    this._oscillatorNode.frequency.setValueAtTime(frequency, 0);
     // set sub oscillator frequency
-    this._subOscillatorNode.frequency.value = (this._oscillatorNode.frequency.value / 2);
+    this._subOscillatorNode.frequency.setValueAtTime((this._oscillatorNode.frequency.value / 2), 0);
     // set arpeggiator baseFreq
     this._arpeggiator.baseFreq = frequency;
     // set sequencer baseFreq
