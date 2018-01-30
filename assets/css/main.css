@@ -136,14 +136,5 @@ and (max-device-width : 480px) {
   .placeholder {
     display: none;
   }
-}
 
-/*fix ios double tap issue?*/
-@media (pointer: fine) {
-  a span {
-    display: none;
-  }
-  a:hover span {
-    display: inline-block;
-  }
 }
