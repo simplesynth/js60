@@ -45,11 +45,11 @@
             <div class="panel-body" style="padding-top: 0; padding-bottom: 0;">
               <div id="sequencer-row" class="row">
                 <a href="#" id="addNote" class="btn btn-success">add note</a>
-                <div class="col-lg-2" style="background-color: rgba(0,0,0,0.025);">
+                <div class="col-md-2" style="background-color: rgba(0,0,0,0.025);">
                   <h4>speed</h4>
                   <input type="range" name="sequencerSpeed" id="sequencerSpeed" min="100" max="2000">
                 </div>
-                <div class="col-lg-2">
+                <div class="col-md-2">
                   <!-- refactor to get index from parent div -->
                   <h4 class="indexNo">1</h4>
                   <span class= "indicatorLight" data-index="0"></span>
@@ -64,55 +64,93 @@
 
     <br>
 
-    <div class="container" id="oscControls">
-      <div class="col-lg-3" id="frequency">
-        <h3>frequency</h3>
-        <input id="frequencyInput" type="range" name="frequency" min="20" max="880" step="0.25">
-      </div>
-      <div class="col-lg-3" id="gain">
-        <h3>gain</h3>
-        <input id="gainInput" type="range" name="gain" min="0" max="1" step="0.01" >
-      </div>
-      <div class="col-lg-3" id="oscType">
-        <h3>shape</h3>
-        <select id="shapeInput">
-          <option value="square">square</option>
-          <option value="triangle">triangle</option>
-          <option value="sine">sine</option>
-          <option value="sawtooth">sawtooth</option>
-        </select>
-      </div>
-      <div class="col-lg-3 placeholder"></div>
-    </div>
-
-    <div class="container">
-      <div class="col-lg-3">
-        <h3>sub-oscillator</h3>
-        <input id="subGainInput" type="range" name="subGain" min="0" max="1" step="0.01" >
-      </div>
-      <div class="col-lg-9 placeholder"></div>
-    </div>
-
     <br>
 
     <div class="container" id="filterControls">
-      <div class="col-lg-3" id="filterFreq">
-        <h3>filter frequency</h3>
-        <input id="filterFreqInput" type="range" name="filterFreq" min="0" max="15000">
-      </div>
-      <div class="col-lg-3" id="resonance">
-        <h3>resonance</h3>
-        <input id="resonanceInput" type="range" name="resonance" min="0" max="30" step="1">
-      </div>
-      <div class="col-lg-6 placeholder">
+      <div class="row">
+        <!-- OSCILLATOR -->
+        <div class="col-md-3">
+          <h2>oscillator</h2>
+          <h3>shape</h3>
+          <select id="shapeInput" style="width: 100%">
+            <option value="square">square</option>
+            <option value="triangle">triangle</option>
+            <option value="sine">sine</option>
+            <option value="sawtooth">sawtooth</option>
+          </select>
 
+          <h3>frequency</h3>
+          <input id="frequencyInput" type="range" name="frequency" min="20" max="880" step="0.25">
+
+          <h3>gain</h3>
+          <input id="gainInput" type="range" name="gain" min="0" max="1" step="0.01" >
+
+          <h3>sub-oscillator</h3>
+          <input id="subGainInput" type="range" name="subGain" min="0" max="1" step="0.01" >
+
+        </div>
+        <!-- FILTER -->
+        <div class="col-md-3" id="filterFreq">
+          <h2>filter</h2>
+          <div class="row">
+            <div class="col-md-12">
+              <h3>frequency</h3>
+              <input id="filterFreqInput" type="range" name="filterFreq" min="0" max="15000">
+            </div>
+            <div class="col-md-12" id="resonance">
+              <h3>resonance</h3>
+              <input id="resonanceInput" type="range" name="resonance" min="0" max="30" step="1">
+            </div>
+          </div>
+        </div>
+        <!-- ENVELOPE -->
+        <div class="col-md-3">
+          <h2>envelope</h2>
+          <div id="attack">
+            <h3>attack</h3>
+            <input type="range" name="attackTime" id="attackTime" min="1" max="1000" step="1">
+          </div>
+          <div id="delay">
+            <h3>delay</h3>
+            <input type="range" name="delayTime" id ="delayTime" min="1" max="1000" step="1">
+          </div>
+          <div id="sustain">
+            <h3>sustain</h3>
+            <input type="range" name="sustainLevel" id="sustainLevel" min="0" max="1" step="0.01">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <h3>LFO</h3>
+          <div id="shape">
+            <h4>shape</h4>
+            <select id="lfoShape" style="width: 100%">
+              <option value="square">square</option>
+              <option value="sine">sine</option>
+            </select>
+          </div>
+          <div id="destination">
+            <h4>dest</h4>
+            <select id="lfoDestination" style="width: 100%">
+              <option value="gain">gain</option>
+              <option value="filter">filter</option>
+            </select>
+          </div>
+          <div id="lfo-amplitude">
+            <h4>amplitude</h4>
+            <input type="range" name="lfoAmplitude" id="lfoAmplitude" min="0.0" max="0.99" step="0.01" value="0">
+          </div>
+          <div id="lfo-frequency">
+            <h4>frequency</h4>
+            <input type="range" name="lfoFrequency" id="lfoFrequency" min="-500" max="10">
+          </div>
+        </div>
       </div>
     </div>
 
     <br><br>
 
-    <div class="container" id="arpeggiatorControls">
-      <!-- <div class="col-lg-3">
+    <!-- <div class="container" id="arpeggiatorControls"> -->
+      <!-- <div class="col-md-3">
         <h3>arpeggiator</h3>
         <div id="startStop">
           <a href="#" id="arpStart" class="btn btn-sm btn-success">
@@ -127,7 +165,7 @@
           <input type="range" name="arpSpeed" id="arpSpeed" min="-2000" max ="1">
         </div>
         <div class="container-fluid">
-          <div class="col-lg-6 col-sm-6" id="octaves">
+          <div class="col-md-6 col-sm-6" id="octaves">
             <h4>octaves</h4>
             <select id="arpOctaves">
               <option value="2">2</option>
@@ -135,7 +173,7 @@
               <option value="4">4</option>
             </select>
           </div>
-          <div class="col-lg-6 col-sm-6" id="direction">
+          <div class="col-md-6 col-sm-6" id="direction">
             <h4>direction</h4>
             <select id="arpDirection">
               <option value='up'>up</option>
@@ -145,52 +183,8 @@
           </div>
         </div>
       </div> -->
-      <div class="col-lg-3">
-        <h3>envelope</h3>
-        <div id="attack">
-          <h4>attack</h4>
-          <input type="range" name="attackTime" id="attackTime" min="1" max="1000" step="1">
-        </div>
-        <div id="delay">
-          <h4>delay</h4>
-          <input type="range" name="delayTime" id ="delayTime" min="1" max="1000" step="1">
-        </div>
-        <div id="sustain">
-          <h4>sustain</h4>
-          <input type="range" name="sustainLevel" id="sustainLevel" min="0" max="1" step="0.01">
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <h3>LFO</h3>
-        <div class="container-fluid">
-          <div class="col-lg-4">
-            <div id="shape">
-              <h4>shape</h4>
-              <select id="lfoShape">
-                <option value="square">square</option>
-                <option value="sine">sine</option>
-              </select>
-            </div>
-            <div id="destination">
-              <h4>dest</h4>
-              <select id="lfoDestination">
-                <option value="gain">gain</option>
-                <option value="filter">filter</option>
-              </select>
-            </div>
-          </div>
-          <div class="col-lg-8">
-            <h4>amplitude</h4>
-            <input type="range" name="lfoAmplitude" id="lfoAmplitude" min="0.0" max="0.99" step="0.01" value="0">
-            <h4>frequency</h4>
-            <input type="range" name="lfoFrequency" id="lfoFrequency" min="-500" max="10">
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-5 placeholder">
 
-      </div>
-    </div>
+    <!-- </div> -->
 
   </div>
   <div class="container footer"></div>
