@@ -138,4 +138,8 @@ and (max-device-width : 480px) {
     display: none;
   }
 
+  .indicatorLight {
+    padding: 4px 12px;
+  }
+
 }
