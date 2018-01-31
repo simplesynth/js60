@@ -165,29 +165,7 @@ $(document).ready(function(){
     addNewNoteListeners(nextIndex)
   })
 
-  $('.indicatorLight[data-index="0"]').on('touchend click', function(){
-    js60.sequencer.change_note_at(0, 'x')
-    $(this).addClass('rest');
-  });
-
-  $('.indicatorLight.rest[data-index="0"]').on('touchend click', function(){
-    $(this).removeClass('rest');
-    var note = $('#sequencerNote-0').val();
-    js60.sequencer.change_note_at(0, note);
-  });
-
-  function addNewNoteListeners(index) {
-    $('.indicatorLight[data-index="'+index+'"]').on('touchend click', function(){
-      js60.sequencer.change_note_at(index, 'x')
-      $(this).addClass('rest');
-    });
-
-    $('.indicatorLight.rest[data-index="'+index+'"]').on('touchend click', function(){
-      $(this).removeClass('rest');
-      var note = $('#sequencerNote-'+index+'').val();
-      js60.sequencer.change_note_at(index, note);
-    });
-  }
+  addNewNoteListeners(0);
 
   // $sequencerOpenButton.on('touchend click', function(){
   //    $addNote.toggle();
@@ -262,6 +240,20 @@ $(document).ready(function(){
   })
 
 })
+
+function addNewNoteListeners(index) {
+  $('.indicatorLight[data-index="'+index+'"]').on('touchend click', function(){
+    if ($(this).hasClass('rest')) {
+      $(this).removeClass('rest');
+      var note = $('#sequencerNote-'+index+'').val();
+      js60.sequencer.change_note_at(index, note);
+    }
+    else {
+      js60.sequencer.change_note_at(index, 'x')
+      $(this).addClass('rest');
+    }
+  });
+}
 
 function synthPresent() {
   return typeof js60 !== 'undefined'
