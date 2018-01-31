@@ -72,9 +72,10 @@ class Sequencer {
   // add function to quitremove note
 
   semitoneToFreq(note) {
-    // distance to the octave is equal to the base frequency (440 * 2 = 880, 880 - 440 = 440)
+    // distance to the next highest octave is equal to the base frequency (440 * 2 = 880, 880 - 440 = 440)
     // divide by 12 semitones to get frequency for 1 semitone
     var interval = (this._baseFreq / 12)
+    if (note < 0) { interval = (this._baseFreq / 24) }
     return interval * note;
   }
 
