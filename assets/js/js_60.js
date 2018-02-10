@@ -61,7 +61,7 @@ $(document).ready(function(){
   $frequencyInput.on('touchmove mousemove change', function(){
     // if synth is created and the value differs from the oscillator freq
     if (synthPresent() && clickingFreqInput === true) {
-      js60.oscillatorFreq = $frequencyInput.val();
+      js60.oscillatorBaseFreq = $frequencyInput.val();
     }
   });
 

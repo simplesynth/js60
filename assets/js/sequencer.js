@@ -1,13 +1,13 @@
 class Sequencer {
-  constructor(oscillator, subOscillator, gain, audioCtx) {
+  constructor(synth) {
     this._sequence = [0]
     this._speed = 1000
-    this._oscillator = oscillator;
-    this._subOscillator = subOscillator;
-    this._baseFreq = oscillator.frequency.value;
-    this._gain = gain;
-    this._audioCtx = audioCtx;
-    this._envelope = new Envelope(gain, this._audioCtx);
+    this._synth = synth;
+    this._oscillator = this._synth._oscillatorNode;
+    this._subOscillator = this._synth._subOscillatorNode;
+    this._baseFreq = this._oscillator.frequency.value;
+    this._gain = this._synth._gainNode.gain;
+    this._envelope = new Envelope(synth, this._gain);
     this._process = false
     this._count = 0
     this._isRunning = false
@@ -38,7 +38,7 @@ class Sequencer {
     // stop envelope cycle
     this._envelope.stop();
     var interval = this.semitoneToFreq(this._sequence[this._count])
-    this.oscillatorFreq = this._baseFreq + interval
+    this._synth.modulateOscillatorFreq = this._baseFreq + interval
     this.indicatorLightOn();
     // begin envelope cycle
     this._envelope.start();
@@ -82,11 +82,6 @@ class Sequencer {
   set speed(speed) {
     this._speed = speed;
     this.restart()
-  }
-
-  set oscillatorFreq(frequency) {
-    this._oscillator.frequency.setValueAtTime(frequency, 0);
-    this._subOscillator.frequency.setValueAtTime((frequency / 2), 0);
   }
 
   set baseFreq(frequency){

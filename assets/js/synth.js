@@ -11,7 +11,7 @@ class Synth {
     this._subOscillatorNode = this._audioCtx.createOscillator();
     this._subOscillatorGain = this._audioCtx.createGain();
 
-    this._sequencer = new Sequencer(this._oscillatorNode, this._subOscillatorNode, this._gainNode.gain, this._audioCtx)
+    this._sequencer = new Sequencer(this);
 
     this._initialized = this.initialize();
   }
@@ -118,13 +118,22 @@ class Synth {
     this._subOscillatorGain.gain.value = gain;
   }
 
-  set oscillatorFreq(frequency) {
+  // use this for input value changes
+  set oscillatorBaseFreq(frequency) {
     frequency = parseFloat(frequency);
     this._oscillatorNode.frequency.setValueAtTime(frequency, 0);
     // set sub oscillator frequency
     this._subOscillatorNode.frequency.setValueAtTime((this._oscillatorNode.frequency.value / 2), 0);
     // set sequencer baseFreq
     this._sequencer.baseFreq = frequency;
+  }
+
+  // use this for modulation sources
+  set modulateOscillatorFreq(frequency) {
+    frequency = parseFloat(frequency);
+    this._oscillatorNode.frequency.setValueAtTime(frequency, 0);
+    // set sub oscillator frequency
+    this._subOscillatorNode.frequency.setValueAtTime((this._oscillatorNode.frequency.value / 2), 0);
   }
 
   set oscillatorType(type) {

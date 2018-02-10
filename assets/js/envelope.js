@@ -1,7 +1,7 @@
 class Envelope {
-  constructor(destination, audioCtx) {
+  constructor(synth, destination) {
     this._destination = destination;
-    this._audioCtx = audioCtx;
+    this._audioCtx = synth._audioCtx;
     // the max value
     this._destinationBaseValue = destination.value;
     // 0-1
