@@ -47,7 +47,7 @@ class Synth {
 
     // LFO must be initialized after the initial gain and filter values are set,
     // otherwise the base values will be incorrect
-    this._lfo = new LFO(this._gainNode, this._filterNode);
+    this._lfo = new LFO(this);
 
     return true;
   }

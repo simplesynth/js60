@@ -1,8 +1,9 @@
 // TODO remove started and check process
 class LFO {
-  constructor(gain, filter) {
-    this._gainNode = gain;
-    this._filterNode = filter;
+  constructor(synth) {
+    this._synth = synth;
+    this._gainNode = this._synth._gainNode;
+    this._filterNode = this._synth._filterNode;
     this._amplitude = 0;
     this._frequency = 100;
     this._shape = 'square';
