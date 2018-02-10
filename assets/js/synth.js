@@ -11,7 +11,6 @@ class Synth {
     this._subOscillatorNode = this._audioCtx.createOscillator();
     this._subOscillatorGain = this._audioCtx.createGain();
 
-    this._arpeggiator = new Arpeggiator(this._oscillatorNode, this._subOscillatorNode);
     this._sequencer = new Sequencer(this._oscillatorNode, this._subOscillatorNode, this._gainNode.gain, this._audioCtx)
 
     this._initialized = this.initialize();
@@ -53,7 +52,10 @@ class Synth {
     return true;
   }
 
-  initializeSliders($frequencyInput, $gainInput, $subGainInput, $shapeInput, $filterFreqInput, $resonanceInput, $attackTime, $delayTime, $sustainLevel, $sequencerSpeed){
+  initializeSliders($frequencyInput, $gainInput, $subGainInput, $shapeInput,
+                    $filterFreqInput, $resonanceInput, $attackTime, $delayTime,
+                    $sustainLevel, $sequencerSpeed)
+  {
     $frequencyInput.val(this._oscillatorNode.frequency.value);
     $gainInput.val(this._gainNode.gain.value);
     $subGainInput.val(this._subOscillatorGain.gain.value);
@@ -76,20 +78,6 @@ class Synth {
     this.sequencer.stop();
   }
 
-  startArpeggiator(){
-    this._arpeggiator.start(this._oscillatorNode);
-  }
-
-  stopArpeggiator(){
-    this._arpeggiator.stop(this._oscillatorNode);
-  }
-
-  // TODO: move logic to Arpeggiator
-  restartArpeggiator(){
-    this._arpeggiator.stop(this._oscillatorNode);
-    this._arpeggiator.start(this._oscillatorNode);
-  }
-
   // GETTERS
   get gain() {
     return this._gainNode.gain.value;
@@ -105,10 +93,6 @@ class Synth {
 
   get initialized(){
     return this._initialized;
-  }
-
-  get arpeggiator(){
-    return this._arpeggiator;
   }
 
   get lfo() {
@@ -139,8 +123,6 @@ class Synth {
     this._oscillatorNode.frequency.setValueAtTime(frequency, 0);
     // set sub oscillator frequency
     this._subOscillatorNode.frequency.setValueAtTime((this._oscillatorNode.frequency.value / 2), 0);
-    // set arpeggiator baseFreq
-    this._arpeggiator.baseFreq = frequency;
     // set sequencer baseFreq
     this._sequencer.baseFreq = frequency;
   }
