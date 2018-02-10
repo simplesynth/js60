@@ -38,7 +38,7 @@ class Sequencer {
     // stop envelope cycle
     this._envelope.stop();
     var interval = this.semitoneToFreq(this._sequence[this._count])
-    this._synth.modulateOscillatorFreq = this._baseFreq + interval
+    this._synth.modulatedOscillatorFreq = this._baseFreq + interval
     this.indicatorLightOn();
     // begin envelope cycle
     this._envelope.start();

@@ -129,7 +129,7 @@ class Synth {
   }
 
   // use this for modulation sources
-  set modulateOscillatorFreq(frequency) {
+  set modulatedOscillatorFreq(frequency) {
     frequency = parseFloat(frequency);
     this._oscillatorNode.frequency.setValueAtTime(frequency, 0);
     // set sub oscillator frequency
