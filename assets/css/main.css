@@ -11,6 +11,14 @@
   display: inline;
 }
 
+#valueContainer {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  display: none;
+}
+
 .footer {
   min-height: 45px;
 }
