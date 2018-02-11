@@ -8,6 +8,7 @@ var clickingFreqInput = false;
 var clickingFilterFreqInput = false;
 var clickingGainInput = false;
 var clickingSubGainInput = false;
+var clickingSubOffsetInput = false;
 var clickingSequencerSpeed = false;
 var clickingSequencerNote = false;
 // var js60;
@@ -19,6 +20,7 @@ $(document).ready(function(){
   var $frequencyInput = $('input#frequencyInput');
   var $gainInput = $('input#gainInput');
   var $subGainInput = $('input#subGainInput');
+  var $subOffsetInput = $('input#subOffsetInput');
   var $shapeInput = $('#shapeInput');
   var $filterFreqInput = $('input#filterFreqInput');
   var $resonanceInput = $('input#resonanceInput');
@@ -81,6 +83,14 @@ $(document).ready(function(){
     }
   });
 
+  $subOffsetInput.on('touchstart mousedown', function(){ clickingSubOffsetInput = true; })
+  $subOffsetInput.on('touchend mouseup', function(){ clickingSubOffsetInput = false; })
+  $subOffsetInput.on('touchmove mousemove change', function(){
+    if(synthPresent() && clickingSubOffsetInput === true){
+      js60.subOffset = $subOffsetInput.val();
+    }
+  });
+
   $shapeInput.on('change', function(){
     if (synthPresent()) {
       js60.oscillatorType = $shapeInput.val();
@@ -106,7 +116,7 @@ $(document).ready(function(){
     // create Synth instance and initialize sliders if not yet created
     if (!synthPresent()) {
       js60 = new Synth();
-      js60.initializeSliders($frequencyInput, $gainInput, $subGainInput, $shapeInput, $filterFreqInput, $resonanceInput, $attackTime, $delayTime, $sustainLevel, $sequencerSpeed);
+      js60.initializeSliders($frequencyInput, $gainInput, $subGainInput, $subOffsetInput, $shapeInput, $filterFreqInput, $resonanceInput, $attackTime, $delayTime, $sustainLevel, $sequencerSpeed);
     }
     js60.start();
   });

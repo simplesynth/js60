@@ -69,7 +69,7 @@ class Sequencer {
     this._sequence[index] = note;
   }
 
-  // add function to quitremove note
+  // add function to remove note
 
   semitoneToFreq(note) {
     // distance to the next highest octave is equal to the base frequency (440 * 2 = 880, 880 - 440 = 440)

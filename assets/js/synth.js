@@ -10,6 +10,7 @@ class Synth {
     // sub-oscillator
     this._subOscillatorNode = this._audioCtx.createOscillator();
     this._subOscillatorGain = this._audioCtx.createGain();
+    this._subOffset = 0;
 
     this._sequencer = new Sequencer(this);
 
@@ -52,13 +53,14 @@ class Synth {
     return true;
   }
 
-  initializeSliders($frequencyInput, $gainInput, $subGainInput, $shapeInput,
+  initializeSliders($frequencyInput, $gainInput, $subGainInput, $subOffsetInput, $shapeInput,
                     $filterFreqInput, $resonanceInput, $attackTime, $delayTime,
                     $sustainLevel, $sequencerSpeed)
   {
     $frequencyInput.val(this._oscillatorNode.frequency.value);
     $gainInput.val(this._gainNode.gain.value);
     $subGainInput.val(this._subOscillatorGain.gain.value);
+    $subOffsetInput.val(this._subOffset);
     $shapeInput.val(this._oscillatorNode.type);
     $filterFreqInput.val(this._filterNode.frequency.value);
     $resonanceInput.val(this._filterNode.Q.value);
@@ -118,12 +120,17 @@ class Synth {
     this._subOscillatorGain.gain.value = gain;
   }
 
+  set subOffset(offset) {
+    this._subOffset = parseInt(offset);
+    this._subOscillatorNode.frequency.setValueAtTime(this.calculateSubFreq(), 0);
+  }
+
   // use this for input value changes
   set oscillatorBaseFreq(frequency) {
     frequency = parseFloat(frequency);
     this._oscillatorNode.frequency.setValueAtTime(frequency, 0);
     // set sub oscillator frequency
-    this._subOscillatorNode.frequency.setValueAtTime((this._oscillatorNode.frequency.value / 2), 0);
+    this._subOscillatorNode.frequency.setValueAtTime(this.calculateSubFreq(), 0);
     // set sequencer baseFreq
     this._sequencer.baseFreq = frequency;
   }
@@ -133,7 +140,7 @@ class Synth {
     frequency = parseFloat(frequency);
     this._oscillatorNode.frequency.setValueAtTime(frequency, 0);
     // set sub oscillator frequency
-    this._subOscillatorNode.frequency.setValueAtTime((this._oscillatorNode.frequency.value / 2), 0);
+    this._subOscillatorNode.frequency.setValueAtTime(this.calculateSubFreq(), 0);
   }
 
   set oscillatorType(type) {
@@ -147,6 +154,12 @@ class Synth {
 
   set resonance(resonance) {
     this._filterNode.Q.value = resonance;
+  }
+
+  calculateSubFreq() {
+    var semitone = (this._subOffset < 0) ? (this._oscillatorNode.frequency.value / 24) : (this._oscillatorNode.frequency.value / 12);
+    var offset_in_semitones = semitone * this._subOffset;
+    return this._oscillatorNode.frequency.value + offset_in_semitones;
   }
 
 }
