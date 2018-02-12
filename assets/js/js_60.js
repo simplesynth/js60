@@ -11,6 +11,12 @@ var clickingSubGainInput = false;
 var clickingSubOffsetInput = false;
 var clickingSequencerSpeed = false;
 var clickingSequencerNote = false;
+var clickingAttackTime = false;
+var clickingDelayTime = false;
+var clickingSustainLevel = false;
+var clickingLfoAmplitude = false;
+var clickingLfoFrequency = false;
+var clickingResonanceInput = false;
 // var js60;
 
 $(document).ready(function(){
@@ -59,35 +65,39 @@ $(document).ready(function(){
 
   // fix for mousemove without click
   $frequencyInput.on('touchstart mousedown', function(){ clickingFreqInput = true; })
-  $frequencyInput.on('touchend mouseup', function(){ clickingFreqInput = false;  })
+  $frequencyInput.on('touchend mouseup', function(){ clickingFreqInput = false; hideValue(); })
   $frequencyInput.on('touchmove mousemove change', function(){
     // if synth is created and the value differs from the oscillator freq
     if (synthPresent() && clickingFreqInput === true) {
       js60.oscillatorBaseFreq = $frequencyInput.val();
+      displayValue($frequencyInput.val(), 'Hz');
     }
   });
 
   $gainInput.on('touchstart mousedown', function(){ clickingGainInput = true; })
-  $gainInput.on('touchend mouseup', function(){ clickingGainInput = false; })
+  $gainInput.on('touchend mouseup', function(){ clickingGainInput = false; hideValue(); })
   $gainInput.on('touchmove mousemove change', function(){
     if(synthPresent() && clickingGainInput === true){
       js60.gain = $gainInput.val();
+      displayValue($gainInput.val());
     }
   });
 
   $subGainInput.on('touchstart mousedown', function(){ clickingSubGainInput = true; })
-  $subGainInput.on('touchend mouseup', function(){ clickingSubGainInput = false; })
+  $subGainInput.on('touchend mouseup', function(){ clickingSubGainInput = false; hideValue(); })
   $subGainInput.on('touchmove mousemove change', function(){
     if(synthPresent() && clickingSubGainInput === true){
       js60.subGain = $subGainInput.val();
+      displayValue($subGainInput.val());
     }
   });
 
   $subOffsetInput.on('touchstart mousedown', function(){ clickingSubOffsetInput = true; })
-  $subOffsetInput.on('touchend mouseup', function(){ clickingSubOffsetInput = false; })
+  $subOffsetInput.on('touchend mouseup', function(){ clickingSubOffsetInput = false; hideValue(); })
   $subOffsetInput.on('touchmove mousemove change', function(){
     if(synthPresent() && clickingSubOffsetInput === true){
       js60.subOffset = $subOffsetInput.val();
+      displayValue($subOffsetInput.val());
     }
   });
 
@@ -98,16 +108,20 @@ $(document).ready(function(){
   });
 
   $filterFreqInput.on('touchstart mousedown', function(){ clickingFilterFreqInput = true; })
-  $filterFreqInput.on('touchend mouseup', function(){ clickingFilterFreqInput = false; })
+  $filterFreqInput.on('touchend mouseup', function(){ clickingFilterFreqInput = false; hideValue(); })
   $filterFreqInput.on('touchmove mousemove change', function(){
     if (synthPresent() && clickingFilterFreqInput === true){
       js60.filterFreq = $filterFreqInput.val();
+      displayValue($filterFreqInput.val(), 'Hz');
     }
   });
 
+  $resonanceInput.on('touchstart mousedown', function(){ clickingResonanceInput = true; })
+  $resonanceInput.on('touchend mouseup', function(){ clickingResonanceInput = false; hideValue(); })
   $resonanceInput.on('touchmove mousemove change', function(){
-    if (synthPresent()) {
+    if (synthPresent() && clickingResonanceInput === true){
       js60.resonance = $resonanceInput.val();
+      displayValue($resonanceInput.val());
     }
   });
 
@@ -130,38 +144,52 @@ $(document).ready(function(){
   });
 
   // ENVELOPE LISTENERS
-  $attackTime.on('change', function(e){
-    e.preventDefault();
-    js60.envelope.attackTime = parseFloat($attackTime.val());
+  $attackTime.on('touchstart mousedown', function(){ clickingAttackTime = true; })
+  $attackTime.on('touchend mouseup', function(){ clickingAttackTime = false; hideValue(); })
+  $attackTime.on('touchmove mousemove change', function(e){
+    if(synthPresent() && clickingAttackTime === true){
+      js60.envelope.attackTime = parseFloat($attackTime.val());
+      displayValue(parseFloat($attackTime.val()), 'ms');
+    }
   });
 
-  $delayTime.on('change', function(e){
-    e.preventDefault();
-    js60.envelope.delayTime = parseFloat($delayTime.val());
+  $delayTime.on('touchstart mousedown', function(){ clickingDelayTime = true; })
+  $delayTime.on('touchend mouseup', function(){ clickingDelayTime = false; hideValue(); })
+  $delayTime.on('touchmove mousemove change', function(e){
+    if(synthPresent() && clickingDelayTime === true){
+      js60.envelope.delayTime = parseFloat($delayTime.val());
+      displayValue(parseFloat($delayTime.val()), 'ms');
+    }
   });
 
-  $sustainLevel.on('change', function(e){
-    e.preventDefault();
-    js60.envelope.sustainLevel = parseFloat($sustainLevel.val());
+  $sustainLevel.on('touchstart mousedown', function(){ clickingSustainLevel = true; })
+  $sustainLevel.on('touchend mouseup', function(){ clickingSustainLevel = false; hideValue(); })
+  $sustainLevel.on('touchmove mousemove change', function(e){
+    if(synthPresent() && clickingSustainLevel === true){
+      js60.envelope.sustainLevel = parseFloat($sustainLevel.val());
+      displayValue(parseFloat($sustainLevel.val()));
+    }
   });
 
   // SEQUENCER LISTENERS
   $sequencerSpeed.on('touchstart mousedown', function(){ clickingSequencerSpeed = true; })
-  $sequencerSpeed.on('touchend mouseup', function(){ clickingSequencerSpeed = false; })
+  $sequencerSpeed.on('touchend mouseup', function(){ clickingSequencerSpeed = false; hideValue(); })
   $sequencerSpeed.on('touchmove mousemove change', function(){
     if(synthPresent() && clickingSequencerSpeed === true){
       js60.sequencer.speed = $sequencerSpeed.val();
+      displayValue($sequencerSpeed.val(), 'ms');
     }
   });
 
   $sequencerRow.on('touchstart mousedown', $sequencerNote, function(){ clickingSequencerNote = true; })
-  $sequencerRow.on('touchend mouseup', $sequencerNote, function(){ clickingSequencerNote = false; })
+  $sequencerRow.on('touchend mouseup', $sequencerNote, function(){ clickingSequencerNote = false; hideValue(); })
   $sequencerRow.on('touchmove mousemove change', $sequencerNote, function(e){
     if(synthPresent() && clickingSequencerNote === true){
       var index = parseInt(e.target.getAttribute('data-index'));
       var interval = parseInt(e.target.value);
       js60.sequencer.change_note_at(index, interval);
       $('.indicatorLight[data-index="'+index+'"]').removeClass('rest');
+      displayValue(interval);
     }
   });
 
@@ -175,67 +203,27 @@ $(document).ready(function(){
     addNewNoteListeners(nextIndex)
   })
 
+  //bind listeners for first sequencer note
   addNewNoteListeners(0);
 
-  // $sequencerOpenButton.on('touchend click', function(){
-  //    $addNote.toggle();
-  // })
-
-  // $sequencerRow.on('click', $indicatorLight, function(e){
-  //   // change note to 'x'
-  //   var index = parseInt(e.target.getAttribute('data-index'));
-  //   js60.sequencer.change_note_at(index, 'x')
-  //   // add class to change indicator light color
-  //   $(e.target).addClass('rest')
-  // })
-
-
-
-  //   // ARPEGGIATOR LISTENERS
-  // $arpStart.on('click', function(e){
-  //   e.preventDefault();
-  //   if(synthPresent()){
-  //     js60.startArpeggiator();
-  //   }
-  // });
-
-  // $arpStop.on('click', function(e){
-  //   e.preventDefault();
-  //   if (synthPresent() && js60.arpeggiator.isRunning()){
-  //     js60.stopArpeggiator();
-  //   }
-  // });
-
-  // $arpSpeed.on('change', function(){
-  //   if (synthPresent()){
-  //     js60.arpeggiator.speed = $arpSpeed.val();
-  //   }
-  // });
-
-  // $arpOctaves.on('change', function(){
-  //   if (synthPresent()){
-  //     js60.arpeggiator.octaves = $arpOctaves.val();
-  //   }
-  // })
-
-  // $arpDirection.on('change', function(){
-  //   if(synthPresent()){
-  //     js60.arpeggiator.direction = $arpDirection.val();
-  //   }
-  // })
-
     // LFO LISTENERS
-  $lfoAmplitude.on('change', function(){
-    if (synthPresent()){
+  $lfoAmplitude.on('touchstart mousedown', function(){ clickingLfoAmplitude = true; })
+  $lfoAmplitude.on('touchend mouseup', function(){ clickingLfoAmplitude = false; hideValue(); })
+  $lfoAmplitude.on('touchmove mousemove change', function(){
+    if(synthPresent() && clickingLfoAmplitude === true){
       js60.lfo.amplitude = $lfoAmplitude.val();
+      displayValue($lfoAmplitude.val());
     }
-  })
+  });
 
-  $lfoFrequency.on('change', function(){
-    if (synthPresent()){
+  $lfoFrequency.on('touchstart mousedown', function(){ clickingLfoFrequency = true; })
+  $lfoFrequency.on('touchend mouseup', function(){ clickingLfoFrequency = false; hideValue(); })
+  $lfoFrequency.on('touchmove mousemove change', function(){
+    if(synthPresent() && clickingLfoFrequency === true){
       js60.lfo.frequency = $lfoFrequency.val();
+      // displayValue($lfoFrequency.val());
     }
-  })
+  });
 
   $lfoDestination.on('change', function(){
     if (synthPresent()){
@@ -250,6 +238,17 @@ $(document).ready(function(){
   })
 
 })
+
+function displayValue(value, unit = '') {
+  var $valueContainer = $('#valueContainer');
+  $valueContainer.html(value + unit);
+  $valueContainer.show()
+}
+
+function hideValue() {
+  var $valueContainer = $('#valueContainer');
+  $valueContainer.hide();
+}
 
 function addNewNoteListeners(index) {
   $('.indicatorLight[data-index="'+index+'"]').on('touchend click', function(){
