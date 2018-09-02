@@ -12,6 +12,8 @@ class Envelope {
     // 0-1
     this._sustainLevel = 1;
     this._continue = false;
+    // value pad to avoid clipping
+    this._valuePad = 0.001;
   }
 
   start() {
@@ -21,12 +23,16 @@ class Envelope {
   }
 
   attackCycle(count = 0) {
+    // preserve the object so that it can be referred to within the timeout function
     var self = this;
-    // if (this.attackTime > 1) { this.destinationValue = 0 }
+    // defines the attack cycle timeout
     setTimeout(function() {
+      // reset the destination value to minimum value if _continue is set to false
       if (this._continue === false) {
-        this.destinationValue = 0;
+        // don't reset all the way to the minimum value to reduce clipping
+        this.destinationValue = (self._destination.minValue + self._valuePad);
       }
+      // set the destination
       else if(self.attackTime === 1) { self.destinationValue = self._destinationBaseValue; self.delayCycle(); }
       else{
         // console.log('incrementing gain by: ' + parseFloat(self._destinationBaseValue) / parseFloat(self._attackTime))
@@ -91,6 +97,12 @@ class Envelope {
   }
 
   set sustainLevel(value) {
+    // if the value is less than or equal to the destination min value
+    if (value <= this._destination.minValue) {
+      // pad the value to avoid clipping
+      value = (this._destination.minValue + this._valuePad);
+    }
+    console.log(value);
     this._sustainLevel = value;
   }
 

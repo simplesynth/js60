@@ -6,6 +6,15 @@ class Synth {
     this._preGain = this._audioCtx.createGain();
     // oscillator 1
     this._oscillatorNode = this._audioCtx.createOscillator();
+    var bufferSize = 2 * this._audioCtx.sampleRate;
+    this._noiseBuffer = this._audioCtx.createBuffer(1, bufferSize, this._audioCtx.sampleRate);
+    var output = this._noiseBuffer.getChannelData(0);
+    for (var i = 0; i < bufferSize; i++) {
+        output[i] = Math.random() * 2 - 1;
+    }
+
+    this._whiteNoise = this._audioCtx.createBufferSource();
+
     this._oscillatorGain = this._audioCtx.createGain();
     // sub-oscillator
     this._subOscillatorNode = this._audioCtx.createOscillator();
@@ -23,8 +32,13 @@ class Synth {
     // this._preGain.connect(this._filterNode);
     this._oscillatorGain.connect(this._preGain);
     this._subOscillatorGain.connect(this._preGain);
-    this._oscillatorNode.connect(this._oscillatorGain);
+    // this._oscillatorNode.connect(this._oscillatorGain);
+    this._whiteNoise.connect(this._oscillatorGain);
     this._subOscillatorNode.connect(this._subOscillatorGain)
+
+    this._whiteNoise.buffer = this._noiseBuffer;
+    this._whiteNoise.loop = true;
+    this._whiteNoise.start(0);
 
     this._gainNode.gain.value = 0.5;
     this._preGain.gain.value = 1;
@@ -44,7 +58,7 @@ class Synth {
     this._subOscillatorNode.start();
 
     this._sequencer.baseFreq = this._oscillatorNode.frequency.value;
-    this.envelope._destinationBaseValue = this._gainNode.gain.value;
+    this.envelope._destinationBaseValue = this._filterNode.frequency.value;
 
     // LFO must be initialized after the initial gain and filter values are set,
     // otherwise the base values will be incorrect
@@ -113,7 +127,7 @@ class Synth {
   set gain(gain) {
     this._gainNode.gain.value = gain;
     this._lfo.baseGain = gain;
-    this._sequencer._envelope._destinationBaseValue = parseFloat(gain);
+    // this._sequencer._envelope._destinationBaseValue = parseFloat(gain);
   }
 
   set subGain(gain) {
@@ -150,6 +164,7 @@ class Synth {
   set filterFreq(frequency) {
     this._filterNode.frequency.value = frequency;
     this._lfo.baseFilterFreq = frequency;
+    this._sequencer._envelope._destinationBaseValue = parseFloat(frequency);
   }
 
   set resonance(resonance) {

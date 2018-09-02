@@ -7,7 +7,7 @@ class Sequencer {
     this._subOscillator = this._synth._subOscillatorNode;
     this._baseFreq = this._oscillator.frequency.value;
     this._gain = this._synth._gainNode.gain;
-    this._envelope = new Envelope(synth, this._gain);
+    this._envelope = new Envelope(synth, synth._filterNode.frequency);
     this._process = false
     this._count = 0
     this._isRunning = false
